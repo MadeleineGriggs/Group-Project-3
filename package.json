@@ -1,0 +1,28 @@
+{
+  "name": "project-3",
+  "version": "1.0.0",
+  "description": "project 3 for the uoft bootcamp",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client", 
+     "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MadeleineGriggs/Group-Project-3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MadeleineGriggs/Group-Project-3/issues"
+  },
+  "homepage": "https://github.com/MadeleineGriggs/Group-Project-3#readme",
+  "dependencies": {
+    "concurrently": "^5.0.0",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.4"
+  }
+}
