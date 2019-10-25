@@ -3,27 +3,6 @@ import "./home.css";
 import Button from '@material-ui/core/Button';
 
 class Home extends Component {
-    // let $exampleText = $("#example-text");
-    // let $exampleDesc = $("#example-description");
-    
-    // let $exampleSubmit = $(".example-submit");
-
-    // $exampleSubmit.on("submit", function(event) {
-    //     event.preventDefault();
-    //     var exampleData = {
-    //         text: $exampleText.val(),
-    //         description: $exampleDesc.val(),
-    //     };
-    //     //Need to check if all data is available.
-    //     signUpExample(exampleData);
-    // });
-
-    // function signUpExample(exampleData) {
-    //     $.post("/api/example", exampleData)
-    //         .catch(function(err) {
-    //             console.log(err);
-    //         });
-    // }
 
     handleSubmit = (event) => {
       event.preventDefault();
@@ -40,16 +19,6 @@ class Home extends Component {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(exampleData)
         })
-        // .then((response) => {
-        //   if (response.status >= 400) {
-        //     throw new Error("Bad response from server");
-        //   }
-        //   return response.json();
-        // }).then((respData) => {
-        //   console.log(respData);
-        // }).catch((err) => {
-        //   console.log(err);
-        // });
 
     }
 
@@ -58,17 +27,36 @@ class Home extends Component {
   render() {
     return(
       <div className="homeContainer">
-      <p>The Home container is here.</p>
-      <Button variant="contained" color="primary">
-          Hello World
-        </Button>
 
-          <br></br>
+        <div className="sign-in-container">
           <form onSubmit={event => this.handleSubmit(event)}>
-        <input required name="exampleText" type="text" className="form-control" id="example-text" placeholder="text..."></input>
-        <input required name="exampleDesc" type="text" className="form-control" id="example-description" placeholder="description..."></input>
-        <button type="submit" className="example-submit">Sign Up</button>
-        </form>
+            <input required name="exampleText" type="text" className="form-control" id="example-text" placeholder="text..."></input>
+            <br></br>
+            <input required name="exampleDesc" type="text" className="form-control" id="example-description" placeholder="description..."></input>
+            <br></br>
+            <button type="submit" className="example-submit">Sign Up</button>
+          </form>
+        </div>
+
+        <h1>Spartan Meetings</h1>
+        <div className="home-buttons">
+          <Button variant="contained" color="primary">
+            Schedule Meeting
+          </Button>
+          <br></br>
+          <br></br>
+          <Button variant="contained" color="primary">
+            View Meetings
+          </Button>
+          <br></br>
+          <br></br>
+          <Button variant="contained" color="primary">
+            Meeting Metrics
+          </Button>
+        </div>
+
+
+
       </div>
     )
   }
