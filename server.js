@@ -4,8 +4,12 @@ const path = require('path');
 
 const port = process.env.PORT || 5000;
 
+var db = require("./models");
+
 //Static file declaration
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+var syncOptions = { force: false };
 
 //production mode
 if(process.env.NODE_ENV === 'production') {  
@@ -25,7 +29,20 @@ app.get('/', (req, res) => {
     res.send('root route');
 });
 
+app.post("/api/example", function(req, res) {
+    db.example.create({
+        text: req.body.text,
+        description: req.body.description
+    }).then(function(dbItem) {
+        res.json(dbItem);
+    });
+});
+
 //Start server
+
+db.sequelize.sync(syncOptions).then(function() {
 app.listen(port, (req, res) => {
     console.log(`server listening on port: ${port}`)
+});
+
 });
