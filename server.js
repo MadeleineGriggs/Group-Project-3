@@ -42,6 +42,19 @@ app.post("/api/example", function(req, res) {
     });
 });
 
+
+app.post("/api/new-user", function(req, res) {
+    db.User.create({
+        name: req.body.name,
+        jobtitle: req.body.jobtitle,
+        hourlyrate: req.body.hourlyrate,
+        email: req.body.email,
+        password: req.body.password
+    }).then(function(dbItem) {
+        res.json(dbItem);
+    });
+});
+
 //Start server
 
 db.sequelize.sync(syncOptions).then(function() {
