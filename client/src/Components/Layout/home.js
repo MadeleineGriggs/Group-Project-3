@@ -33,22 +33,27 @@ class Home extends Component {
             description: event.target.exampleDesc.value,
         };
         console.log(exampleData);
+
+
+        fetch("/api/example", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(exampleData)
+        })
+        // .then((response) => {
+        //   if (response.status >= 400) {
+        //     throw new Error("Bad response from server");
+        //   }
+        //   return response.json();
+        // }).then((respData) => {
+        //   console.log(respData);
+        // }).catch((err) => {
+        //   console.log(err);
+        // });
+
     }
 
-    // fetch('/api/example', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data)
-    // }).then((response) => {
-    //   if (response.status >= 400) {
-    //     throw new Error("Bad response from server");
-    //   }
-    //   return response.json();
-    // }).then((respData) => {
-    //   console.log(respData);
-    // }).catch((err) => {
-    //   console.log(err);
-    // });
+
 
   render() {
     return(

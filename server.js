@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 5000;
 
 var db = require("./models");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Static file declaration
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -30,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.post("/api/example", function(req, res) {
-    db.example.create({
+    db.Example.create({
         text: req.body.text,
         description: req.body.description
     }).then(function(dbItem) {
