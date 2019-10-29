@@ -73,8 +73,8 @@ class Home extends Component {
     fetch("api/authCheck", {
       method: "GET"
     })
-      .then(res => res.json())
-      .then(res => console.log(res))
+      .then(res => res.text())
+      .then(text => console.log(text))
   }
 
 
