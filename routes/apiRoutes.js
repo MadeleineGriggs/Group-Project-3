@@ -1,15 +1,10 @@
 
 var db = require("../models");
 var passport = require("../config/passport");
-var isAuthenticated = require("../config/middleware/isAuthenticated")
+var isAuthenticated = require("../config/middleware/isAuthenticated");
+
+
 module.exports = function(app) {
-
-
-
-    //Route setup
-    // app.get('/', (req, res) => {    
-    //     res.send('root route');
-    // });
 
     app.post("/api/example", function(req, res) {
         db.Example.create({
@@ -21,11 +16,6 @@ module.exports = function(app) {
     });
 
     app.post("/api/login", passport.authenticate("local"), function(req, res) {
-        res.json(req.user);
-    });
-
-
-    app.post("/api/metrics", passport.authenticate("local"), function(req, res) {
         res.json(req.user);
     });
 
@@ -54,6 +44,8 @@ module.exports = function(app) {
         if(req.isAuthenticated()) {
             console.log("authCheck")
             res.json(req.user);
+        } else {
+            console.log("Authcheck didn't work.")
         }
     });
 
