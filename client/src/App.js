@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./Components/Layout/home.js";
 import ScheduleMeet from "./Components/Layout/schedulemeet.js";
 // import ViewMeet from "./Components/Layout/viewmeet.js";
-import Calendar from "./Components/Calendar/Calendar";
+import Calendar from "./Components/Calendar/Calendar.js";
 import Metrics from "./Components/Layout/metrics.js";
 
 // import logo from './logo.svg';
