@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./Components/Layout/home.js";
 import ScheduleMeet from "./Components/Layout/schedulemeet.js";
 // import ViewMeet from "./Components/Layout/viewmeet.js";
-import Calendar from "./Components/Calendar/Calendar.js";
+import Ourcalendar from "./Components/Calendar/Calendar.js";
 import Metrics from "./Components/Layout/metrics.js";
+import Pg404 from "./Components/Layout/Pg404.js";
 
 // import logo from './logo.svg';
 import "./App.css";
@@ -29,7 +30,7 @@ class App extends Component {
       <Router>
         <Route exact path="/" component={Home} />
         <Route exact path="/schedule-meet" component={ScheduleMeet} />
-        <Route exact path="/view-meet" component={Calendar} />
+        <Route exact path="/view-meet" component={Ourcalendar} />
         <Route exact path="/metrics" component={Metrics} />
         <Route exact path="/404" component={Pg404} />
 
