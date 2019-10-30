@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./Components/Layout/home.js";
@@ -30,6 +31,8 @@ class App extends Component {
         <Route exact path="/schedule-meet" component={ScheduleMeet} />
         <Route exact path="/view-meet" component={Calendar} />
         <Route exact path="/metrics" component={Metrics} />
+        <Route exact path="/404" component={Pg404} />
+
       </Router>
     );
   }

@@ -1,48 +1,81 @@
 import React, { Component } from "react";
 import "./home.css";
 import Button from '@material-ui/core/Button';
+// import { EventEmitter } from "events";
 
 class Home extends Component {
 
-    handleSubmitExample = (event) => {
-      event.preventDefault();
+  // handleSubmitExample = (event) => {
+  //   event.preventDefault();
 
-        const exampleData = {
-            text: event.target.exampleText.value,
-            description: event.target.exampleDesc.value,
-        };
-        console.log(exampleData);
-
-
-        fetch("/api/example", {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(exampleData)
-        })
-
-    }
-
-    handleSubmitUser = (event) => {
-      event.preventDefault();
-
-        const userData = {
-            name: event.target.userName.value,
-            jobtitle: event.target.jobTitle.value,
-            hourlyrate: event.target.hourRate.value,
-            email: event.target.emailAddress.value,
-            password: event.target.userPassword.value
-        };
-        console.log(userData);
+  //     const exampleData = {
+  //         text: event.target.exampleText.value,
+  //         description: event.target.exampleDesc.value,
+  //     };
+  //     console.log(exampleData);
 
 
-        fetch("/api/new-user", {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userData)
-        })
+  //     fetch("/api/example", {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(exampleData)
+  //     })
 
-    }
+  // }
 
+  handleSubmitUser = (event) => {
+    event.preventDefault();
+
+      const userData = {
+          name: event.target.userName.value,
+          jobtitle: event.target.jobTitle.value,
+          hourlyrate: event.target.hourRate.value,
+          email: event.target.emailAddress.value,
+          company: event.target.company.value,
+          password: event.target.userPassword.value
+      };
+      console.log(userData);
+
+
+      fetch("/api/new-user", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      })
+
+  }
+
+  handleUserLogin = (event) => {
+    event.preventDefault();
+    const userLoginData = {
+      email: event.target.loginEmail.value,
+      password: event.target.loginPassword.value
+    };
+    console.log(userLoginData)
+    fetch("/api/login", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userLoginData)
+    })
+  }
+
+  handleUserLogout = (event) => {
+    event.preventDefault();
+    fetch("api/logout", {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+  }
+
+  handleAuthCheck = (event) => {
+    event.preventDefault()
+    fetch("api/authCheck", {
+      method: "GET"
+    })
+      .then(res => res.text())
+      .then(text => console.log(text))
+  }
 
 
   render() {
@@ -50,16 +83,26 @@ class Home extends Component {
       <div className="homeContainer">
 
         <div className="sign-in-container">
-          <form onSubmit={event => this.handleSubmitExample(event)}>
-            <input required name="exampleText" type="text" className="form-control" id="example-text" placeholder="text..."></input>
+          <form onSubmit={event => this.handleUserLogin(event)}>
+            <input required name="loginEmail" type="text" className="form-control" id="example-text" placeholder="your email address"></input>
             <br></br>
-            <input required name="exampleDesc" type="text" className="form-control" id="example-description" placeholder="description..."></input>
+            <input required name="loginPassword" type="text" className="form-control" id="example-description" placeholder="password"></input>
             <br></br>
-            <button type="submit" className="example-submit">Sign Up</button>
+            <button type="submit" className="login-submit">Login</button>
           </form>
         </div>
 
+        <div className="sign-out-container">
+          <form onSubmit={event => this.handleAuthCheck(event)}>
+            <button>Check Auth</button>
+          </form>
+        </div>
 
+        <div className="auth-check-container">
+          <form onSubmit={event => this.handleUserLogout(event)}>
+            <button type="submit" className="logout-submit">Logout</button>
+          </form>
+        </div>
 
         <h1>Spartan Meetings</h1>
         <div className="home-buttons">
@@ -87,6 +130,8 @@ class Home extends Component {
             <input required name="hourRate" type="text" className="form-control" placeholder="Hourly Rate"></input>
             <br></br>
             <input required name="emailAddress" type="text" className="form-control" placeholder="Email Address"></input>
+            <br></br>
+            <input required name="company" type="text" className="form-control" placeholder="Company"></input>
             <br></br>
             <input required name="userPassword" type="text" className="form-control" placeholder="Password"></input>
             <br></br>
