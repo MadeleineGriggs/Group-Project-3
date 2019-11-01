@@ -20,3 +20,31 @@
 .App-link {
   color: #09d3ac;
 }
+
+.calendarwrap {
+  width: 80vw;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: blue;
+}
+
+
+/* Styling for the Schedule Meet component */
+.meeting-picker {
+  margin: 0 auto;
+  width: 50vw;
+}
+
+.meeting-title {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+.meeting-submit-btn {
+  margin-top: 3rem;
+}
+
+

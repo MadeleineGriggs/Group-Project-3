@@ -1,14 +1,14 @@
 {
   "development": {
-    "username": "root",
-    "password": "br4nch&st3m",
+    "username": "username",
+    "password": "password",
     "database": "spartandb",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "br4nch&st3m",
+    "username": "username",
+    "password": "password",
     "database": "testdb",
     "host": "localhost",
     "dialect": "mysql",

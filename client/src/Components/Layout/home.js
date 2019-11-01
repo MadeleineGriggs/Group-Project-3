@@ -82,7 +82,28 @@ class Home extends Component {
     return(
       <div className="homeContainer">
 
+
+
+        <h1>Spartan Meetings</h1>
+        <div className="home-buttons">
+          <Button variant="contained" color="primary" href="/schedule-meet">
+            Schedule Meeting
+          </Button>
+          <br></br>
+          <br></br>
+          <Button variant="contained" color="primary" href="/view-meet">
+            View Meetings
+          </Button>
+          <br></br>
+          <br></br>
+          <Button variant="contained" color="primary" href="/metrics">
+            Meeting Metrics
+          </Button>
+        </div>
+
+
         <div className="sign-in-container">
+          <h1>Sign in Area</h1>
           <form onSubmit={event => this.handleUserLogin(event)}>
             <input required name="loginEmail" type="text" className="form-control" id="example-text" placeholder="your email address"></input>
             <br></br>
@@ -104,24 +125,9 @@ class Home extends Component {
           </form>
         </div>
 
-        <h1>Spartan Meetings</h1>
-        <div className="home-buttons">
-          <Button variant="contained" color="primary" href="/schedule-meet">
-            Schedule Meeting
-          </Button>
-          <br></br>
-          <br></br>
-          <Button variant="contained" color="primary" href="/view-meet">
-            View Meetings
-          </Button>
-          <br></br>
-          <br></br>
-          <Button variant="contained" color="primary" href="/metrics">
-            Meeting Metrics
-          </Button>
-        </div>
 
         <div className="sign-up-container">
+          <h1>Signup Area</h1>
           <form onSubmit={event => this.handleSubmitUser(event)}>
             <input required name="userName" type="text" className="form-control" placeholder="Name"></input>
             <br></br>

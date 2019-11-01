@@ -8,6 +8,11 @@ import Ourcalendar from "./Components/Calendar/Calendar.js";
 import Metrics from "./Components/Layout/metrics.js";
 import Pg404 from "./Components/Layout/Pg404.js";
 
+
+
+
+
+
 // import logo from './logo.svg';
 import "./App.css";
 
@@ -17,6 +22,7 @@ class App extends Component {
     this.state = {};
     this.connecToServer = this.connecToServer.bind(this);
   }
+
 
   connecToServer() {
     fetch("/");
