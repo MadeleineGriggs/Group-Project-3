@@ -3,8 +3,8 @@ var passport = require("../config/passport");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function(app) {
-  app.post("/api/example", function(req, res) {
-    db.Example.create({
+  app.post("/api/project", function(req, res) {
+    db.Project.create({
       text: req.body.text,
       description: req.body.description
     }).then(function(dbItem) {
@@ -32,8 +32,10 @@ module.exports = function(app) {
   app.post("/api/new-meeting", function(req, res) {
     db.Meeting.create({
       date: req.body.date,
-      start: req.meeting.start,
-      end: req.meeting.end
+      start: req.body.start,
+      end: req.body.end,
+      attendees: req.body.attendees,
+      description: req.body.description
     }).then(function(dbItem) {
       res.json(dbItem);
     });
@@ -42,7 +44,7 @@ module.exports = function(app) {
   app.post("/api/attendees", function(req, res) {
     db.Attendees.create({
       mId: req.body.mId,
-      uId: req.meeting.uId
+      uId: req.body.uId
     }).then(function(dbItem) {
       res.json(dbItem);
     });
