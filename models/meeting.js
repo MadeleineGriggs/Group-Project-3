@@ -9,9 +9,20 @@ module.exports = function(sequelize, DataTypes) {
       required: true
     },
     end: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       required: true
+    },
+    attendees: {
+      type: DataTypes.INTEGER
+    },
+    description: {
+      type: DataTypes.STRING
     }
   });
+
+  Meeting.associate = function(models) {
+    Meeting.hasMany(models.Attendees);
+  };
+
   return Meeting;
 };
