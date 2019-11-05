@@ -56,6 +56,16 @@ module.exports = function(app) {
     // res.redirect("/");
   });
 
+  app.get("/api/users", function(req, res){
+    console.log(req.query)
+    db.User.findAll({
+      where: {
+        company: `${req.query.company}`
+      }
+    }).then( users => console.log(res.json(users))
+    )
+  })
+
   app.get("/api/authCheck", function(req, res) {
     if (req.isAuthenticated()) {
       console.log("authCheck");
