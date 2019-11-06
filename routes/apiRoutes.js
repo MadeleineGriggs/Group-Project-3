@@ -57,11 +57,12 @@ module.exports = function(app) {
   });
 
   app.get("/api/users", function(req, res){
-    console.log(req.query)
+    // console.log(req.query)
     db.User.findAll({
       where: {
         company: `${req.query.company}`
-      }
+      },
+      attributes: ['name', 'email'],
     }).then( users => console.log(res.json(users))
     )
   })
