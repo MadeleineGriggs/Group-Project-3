@@ -8,6 +8,8 @@ import {
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 
+const axios = require('axios');
+
 var newMeeting = () => {
   let newMeet = document.getElementById("newDate");
   let newMeetStart = document.getElementById("newDateStart");
@@ -17,9 +19,33 @@ var newMeeting = () => {
   console.log("End Time: " + newMeetEnd.value);
 };
 
+
+// var users = (company) => {
+//   axios.get(`/api/users?company=${company}`)
+//     .then(function (response){
+//       console.log(response.data)
+    
+//   })
+// }
+
+
+
 function ScheduleMeet(props) {
   const [selectedDate, handleDateChange] = useState(new Date());
   console.log(selectedDate);
+
+  var possibleAttendees;
+
+
+
+  axios.get(`/api/users?company=Phil Tech`)
+    .then(res => {
+      possibleAttendees = res.data
+      console.log(possibleAttendees)
+    })
+
+
+
 
   return (
     <div className="meeting-picker">

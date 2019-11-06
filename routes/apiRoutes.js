@@ -63,7 +63,7 @@ module.exports = function(app) {
         company: `${req.query.company}`
       },
       attributes: ['name', 'email'],
-    }).then( users => console.log(res.json(users))
+    }).then( users => (res.json(users))
     )
   })
 
