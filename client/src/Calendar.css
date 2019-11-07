@@ -1,0 +1,50 @@
+:root {
+    --darkest-greige: #66615b;
+    --greige: #f4f3ef;
+    --grey-medium: #d1cfcd;
+    --grey-dark: #424242;
+    --spartan-primary: #ed3343;
+    --spartan-secondary: #f3bb45;
+  }
+
+  .calendarwrap {
+    width: 80vw;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+
+  .fc-head {
+      background-color: var(--darkest-greige);
+      color: white;
+  }
+  
+  .fc-day-header {
+      padding: 0.5rem !important;
+  }
+  
+  .fc-body {
+      background-color: white;
+  }
+
+  .fc-unthemed td {
+      border-color: var(--grey-medium)
+  }
+
+  .fc-prev-button, .fc-next-button {
+      background-color: var(--spartan-primary);
+      border-color: var(--greige)
+  }
+
+  .fc-today-button {
+      background-color: var(--spartan-secondary) !important;
+      border-color: var(--greige) !important;
+      color: var(--grey-dark) !important;
+  }
+
+  .fc-today {
+      background-color: var(--spartan-secondary) !important ;
+  }
+
+  .fc-left {
+      color: var(--darkest-greige) !important;
+  }

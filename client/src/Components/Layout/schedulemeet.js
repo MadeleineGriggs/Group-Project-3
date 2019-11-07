@@ -24,8 +24,8 @@ import Button from '@material-ui/core/Button';
                     <h3>End Time</h3>
                     <TimePicker value={selectedDate} onChange={handleDateChange} />
                     <div className="meeting-submit-btn">
-                        <Button variant="contained" color="primary" href="/metrics">
-                            Book Meeting
+                        <Button variant="contained" color="primary" href="/">
+                            Book Meeting / Go Home
                         </Button>
                     </div>
                     </MuiPickersUtilsProvider>
