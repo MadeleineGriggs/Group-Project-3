@@ -8,28 +8,6 @@ import {
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 
-var newMeeting = () => {
-  let newMeet = document.getElementById("newDate");
-  let newMeetStart = document.getElementById("newDateStart");
-  let duration = document.getElementById("duration");
-  console.log("New Meeting: " + newMeet.value);
-  console.log("Start Time: " + newMeetStart.value);
-  console.log("Duration: " + duration.value);
-};
-
-var realMeeting = () => {
-  let newDate = document.getElementById("newDate");
-  let newMeetStart = document.getElementById("newDateStart");
-  let duration = document.getElementById("duration");
-  var newMeet = {
-    date: newDate.value,
-    start: newMeetStart.value,
-    duration: duration.value,
-    description: "this is a test"
-  };
-  console.log(newMeet);
-};
-
 var handleMeetingCreation = event => {
   event.preventDefault();
   let newDate = document.getElementById("newDate");
@@ -50,15 +28,6 @@ var handleMeetingCreation = event => {
     body: JSON.stringify(meetingData)
   });
 };
-
-//   $.ajax("/api/new-meeting", {
-//     type: "POST",
-//     data: newMeet
-//   }).then(function() {
-//     console.log("New meeting created!");
-//     location("/");
-//   });
-// };
 
 function ScheduleMeet(props) {
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -99,11 +68,6 @@ function ScheduleMeet(props) {
             text="Please enter duration"
           />
         </div>
-        {/* <TimePicker
-          id="newDateEnd"
-          value={selectedDate}
-          onChange={handleDateChange}
-        /> */}
         <div className="meeting-submit-btn">
           <Button
             id="meetSub"
