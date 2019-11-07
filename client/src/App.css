@@ -1,35 +1,38 @@
+:root {
+  --darkest-greige: #66615b;
+  --greige: #f4f3ef;
+  --grey-medium: #d1cfcd;
+  --grey-medium: #424242;
+  --spartan-primary: #ed3343;
+  --spartan-secondary: #f3bb45;
+}
+
+
+body {
+  background-color: var(--greige)
+}
+
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
+
+
+/* Styling for the home page */
+
+
+
+/* Styling for the signup login modal */
+.login-signup-modal-container {
+  background-color: var(--greige);
+  width: 50rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
-}
-
-.calendarwrap {
-  width: 80vw;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-}
-
-.section-title {
-  color: blue;
-}
 
 
 /* Styling for the Schedule Meet component */

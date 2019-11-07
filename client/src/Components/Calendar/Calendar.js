@@ -13,7 +13,7 @@ export default class Ourcalendar extends React.Component {
       
       <div className="calendarwrap">
         <h1 className="section-title">View Your Meetings</h1>
-        <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} />
+        <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} contentHeight="auto"/>
         <br></br>
         <Button variant="contained" color="primary" href="/" className="go-back-btn">
             Go Back
