@@ -34,20 +34,29 @@ function ScheduleMeet(props) {
   const [selectedDate, handleDateChange] = useState(new Date());
   console.log(selectedDate);
 
-  var possibleAttendees;
-
-
+  var possibleAttendees = []
+  var users = []
 
   axios.get(`/api/users?company=Phil Tech`)
-    .then(res => {
-      possibleAttendees = res.data
-      console.log(possibleAttendees)
-    })
+  .then(res => {
+    possibleAttendees = res.data
+    for (const [index, value] of possibleAttendees.entries()){
+      users.push(<li key={index}>{value}</li>)
+    }
 
+  //   users = possibleAttendees.map(function(user){
+  //    return <li>{user}</li>
+  //  });
+    // console.log(possibleAttendees)
+    console.log('poss: ' + possibleAttendees)
+    console.log('users:' + users)
+  })
+  
 
 
 
   return (
+    <>
     <div className="meeting-picker">
       <h1 className="meeting-title">Schedule a New Meeting</h1>
       <h2>Select your date and time for the meeting here.</h2>
@@ -83,6 +92,11 @@ function ScheduleMeet(props) {
         </div>
       </MuiPickersUtilsProvider>
     </div>
+    <div>
+      <ul>{ users }
+      </ul>
+    </div>
+    </>
   );
 }
 
