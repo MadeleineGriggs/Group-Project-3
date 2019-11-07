@@ -8,14 +8,25 @@ import {
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 
-
-var newMeeting = () => {
-  let newMeet = document.getElementById("newDate");
+var handleMeetingCreation = event => {
+  event.preventDefault();
+  let newDate = document.getElementById("newDate");
   let newMeetStart = document.getElementById("newDateStart");
-  let newMeetEnd = document.getElementById("newDateEnd");
-  console.log("New Meeting: " + newMeet.value);
-  console.log("Start Time: " + newMeetStart.value);
-  console.log("End Time: " + newMeetEnd.value);
+  let durationHour = document.getElementById("durationH");
+  let durationMin = document.getElementById("durationM");
+  const meetingData = {
+    date: newDate.value,
+    start: newMeetStart.value,
+    durationH: durationHour.value,
+    durationM: durationMin.value,
+    description: "work, god damn you"
+  };
+  console.log(meetingData);
+  fetch("/api/new-meeting", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(meetingData)
+  });
 };
 
 
@@ -40,16 +51,28 @@ function ScheduleMeet(props) {
           value={selectedDate}
           onChange={handleDateChange}
         />
-        <h3>End Time</h3>
-        <TimePicker
-          id="newDateEnd"
-          value={selectedDate}
-          onChange={handleDateChange}
-        />
+        <h3>Duration (Hours)</h3>
+        <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
+          <input
+            className="MuiInputBase-input MuiInput-input"
+            id="durationH"
+            type="text"
+            text="Please enter duration"
+          />
+        </div>
+        <h3>Duration (Minutes)</h3>
+        <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
+          <input
+            className="MuiInputBase-input MuiInput-input"
+            id="durationM"
+            type="text"
+            text="Please enter duration"
+          />
+        </div>
         <div className="meeting-submit-btn">
           <Button
             id="meetSub"
-            onClick={newMeeting}
+            onClick={handleMeetingCreation}
             variant="contained"
             color="primary"
             // href="/metrics"
