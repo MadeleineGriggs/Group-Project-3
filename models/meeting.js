@@ -8,8 +8,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       required: true
     },
-    end: {
-      type: DataTypes.STRING,
+    durationH: {
+      type: DataTypes.INTEGER,
+      required: true
+    },
+    durationM: {
+      type: DataTypes.INTEGER,
       required: true
     },
     attendees: {

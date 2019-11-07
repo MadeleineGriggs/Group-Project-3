@@ -33,7 +33,8 @@ module.exports = function(app) {
     db.Meeting.create({
       date: req.body.date,
       start: req.body.start,
-      end: req.body.end,
+      durationH: req.body.durationH,
+      durationM: req.body.durationM,
       attendees: req.body.attendees,
       description: req.body.description
     }).then(function(dbItem) {
