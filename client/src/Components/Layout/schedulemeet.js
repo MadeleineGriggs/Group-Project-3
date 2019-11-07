@@ -8,6 +8,7 @@ import {
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 
+
 var newMeeting = () => {
   let newMeet = document.getElementById("newDate");
   let newMeetStart = document.getElementById("newDateStart");
@@ -16,6 +17,7 @@ var newMeeting = () => {
   console.log("Start Time: " + newMeetStart.value);
   console.log("End Time: " + newMeetEnd.value);
 };
+
 
 function ScheduleMeet(props) {
   const [selectedDate, handleDateChange] = useState(new Date());
