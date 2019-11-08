@@ -16,6 +16,9 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       required: true
     },
+    title: {
+      type: DataTypes.STRING
+    },
     attendees: {
       type: DataTypes.INTEGER
     },

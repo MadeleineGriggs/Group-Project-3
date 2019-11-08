@@ -7,11 +7,13 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 
 var handleMeetingCreation = event => {
   event.preventDefault();
   let newDate = document.getElementById("newDate");
+  let newTitle = document.getElementById("newTitle");
   let newMeetStart = document.getElementById("newDateStart");
   let durationHour = document.getElementById("durationH");
   let durationMin = document.getElementById("durationM");
@@ -20,6 +22,7 @@ var handleMeetingCreation = event => {
     start: newMeetStart.value,
     durationH: durationHour.value,
     durationM: durationMin.value,
+    title: newTitle.value,
     description: "work, god damn you"
   };
   console.log(meetingData);
@@ -52,10 +55,12 @@ function ScheduleMeet(props) {
         />
         <h3>Start Time</h3>
         <TimePicker
+          id="standard-basic"
           id="newDateStart"
           value={selectedDate}
           onChange={handleDateChange}
         />
+
         <h3>Duration (Hours)</h3>
         <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
           {/* <input
@@ -94,6 +99,15 @@ function ScheduleMeet(props) {
             <option value="45">45</option>
           </select>
         </div>
+          <br></br>
+          <br></br>
+        <TextField
+          name="Meeting Title"
+          id="newTitle"
+          className="meeting-title-field"
+          label="Meeting Title"
+        />
+
         <div className="meeting-submit-btn">
           <Button
             id="meetSub"

@@ -16,31 +16,36 @@ export default class Ourcalendar extends React.Component {
       meetings: []
     }
   }
-  fetchMeetings(event) {
-    event.preventDefault();
+
+  // Fetches the meetings from the database with an API call.
+  fetchMeetings() {
+    // event.preventDefault();
 
     fetch("/api/all-meetings")
     .then( res => res.json())
     .then((data) => {
-      console.log(data)
+      
         this.setState({meetings: data})
+        console.log(this.state.meetings)
     })
     .catch(console.log)
   };
+
+  //When the fetch has returned the meetings, mount it to the state. This fills in the calendar.
+  componentDidMount() {
+    this.fetchMeetings();
+  }
   
 
   render() {
     return (
       <div className="calendarwrap">
-          <Button variant="contained" color="primary" className="fetch-meeting-btn" onClick={(e) => this.fetchMeetings(e)}>
-            Populate Calendar - Check Console Log.
-          </Button>
+        <div>{this.state.meetings.map((item, key) =>
+            <div item={item.date} key={item.id}>{item.title}, {item.date}</div>
+        )}</div>
         <h1 className="section-title">View Your Meetings</h1>
         <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} contentHeight="auto"   
-        events={[
-    { title: 'event 1', date: '2019-07-01' },
-    { title: 'event 2', date: '2019-07-02' }
-  ]}/>
+        events={this.state.meetings}/>
         <br></br>
         <Button
           variant="contained"

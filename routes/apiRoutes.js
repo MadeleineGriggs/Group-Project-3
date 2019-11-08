@@ -35,6 +35,7 @@ module.exports = function(app) {
       start: req.body.start,
       durationH: req.body.durationH,
       durationM: req.body.durationM,
+      title: req.body.title,
       attendees: req.body.attendees,
       description: req.body.description
     }).then(function(dbItem) {
@@ -67,10 +68,10 @@ module.exports = function(app) {
   });
 
 
-
+//API route to get all meetings. Used to populate the calendar display.
   app.get("/api/all-meetings", function(req, res) {
     db.Meeting.findAll({
-      attributes: ['date', 'start', 'durationH']
+      attributes: ['title', 'date']
     }).then( meetings => (res.json(meetings))
     )
   });
