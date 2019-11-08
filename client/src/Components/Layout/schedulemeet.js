@@ -29,7 +29,6 @@ var handleMeetingCreation = event => {
   });
 };
 
-
 function ScheduleMeet(props) {
   const [selectedDate, handleDateChange] = useState(new Date());
   console.log(selectedDate);
@@ -53,21 +52,41 @@ function ScheduleMeet(props) {
         />
         <h3>Duration (Hours)</h3>
         <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
-          <input
+          {/* <input
             className="MuiInputBase-input MuiInput-input"
             id="durationH"
             type="text"
             text="Please enter duration"
-          />
+          /> */}
+          <select id="durationH" name="hours">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
         </div>
         <h3>Duration (Minutes)</h3>
         <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
-          <input
+          {/* <input
             className="MuiInputBase-input MuiInput-input"
             id="durationM"
             type="text"
             text="Please enter duration"
-          />
+          /> */}
+          <select id="durationM" name="minutes">
+            <option value="0">0</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="45">45</option>
+          </select>
         </div>
         <div className="meeting-submit-btn">
           <Button
