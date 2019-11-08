@@ -7,8 +7,9 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
+import Attendees from "./attendees.jsx";
 
-const axios = require('axios');
+
 
 var newMeeting = () => {
   let newMeet = document.getElementById("newDate");
@@ -34,23 +35,23 @@ function ScheduleMeet(props) {
   const [selectedDate, handleDateChange] = useState(new Date());
   console.log(selectedDate);
 
-  var possibleAttendees = []
-  var users = []
+  // var possibleAttendees = []
+  // var users = []
 
-  axios.get(`/api/users?company=Phil Tech`)
-  .then(res => {
-    possibleAttendees = res.data
-    for (const [index, value] of possibleAttendees.entries()){
-      users.push(<li key={index}>{value}</li>)
-    }
+  // axios.get(`/api/users?company=Phil Tech`)
+  // .then(res => {
+  //   possibleAttendees = res.data
+  //   for (const [index, value] of possibleAttendees.entries()){
+  //     users.push(<li key={index}>{value}</li>)
+  //   }
 
   //   users = possibleAttendees.map(function(user){
   //    return <li>{user}</li>
   //  });
-    // console.log(possibleAttendees)
-    console.log('poss: ' + possibleAttendees)
-    console.log('users:' + users)
-  })
+    // // console.log(possibleAttendees)
+    // console.log('poss: ' + possibleAttendees)
+  //   // console.log('users:' + users)
+  // })
   
 
 
@@ -92,10 +93,11 @@ function ScheduleMeet(props) {
         </div>
       </MuiPickersUtilsProvider>
     </div>
-    <div>
+    <Attendees attendees={this.state.attendees} />
+    {/* <div>
       <ul>{ users }
       </ul>
-    </div>
+    </div> */}
     </>
   );
 }

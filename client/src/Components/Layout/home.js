@@ -99,6 +99,7 @@ class Home extends Component {
           <Button variant="contained" color="primary" href="/metrics">
             Meeting Metrics
           </Button>
+          <Button variant="contained" color="primary" href="/users"></Button>
         </div>
 
 
@@ -144,6 +145,8 @@ class Home extends Component {
             <button type="submit" className="signup-submit">Sign Up</button>
           </form>
         </div>
+
+
 
       </div>
     )

@@ -62,7 +62,7 @@ module.exports = function(app) {
       where: {
         company: `${req.query.company}`
       },
-      attributes: ['name', 'email'],
+      attributes: ['name', 'email', 'id'],
     }).then( users => (res.json(users))
     )
   })

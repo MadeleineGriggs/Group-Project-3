@@ -12,7 +12,6 @@ import Pg404 from "./Components/Layout/Pg404.js";
 
 
 
-
 // import logo from './logo.svg';
 import "./App.css";
 
@@ -21,15 +20,22 @@ class App extends Component {
     super(props);
     this.state = {};
     this.connecToServer = this.connecToServer.bind(this);
-  }
+  };
 
-
+  
   connecToServer() {
     fetch("/");
   }
-
+  
+  state = {attendees: []};
   componentDidMount() {
     this.connecToServer();
+    fetch(`/api/users?company=Phil Tech`)
+    .then( res => res.json())
+    .then((data) => {
+        this.setState({attendees: data})
+    })
+    .catch(console.log)
   }
   render() {
     return (
@@ -39,7 +45,6 @@ class App extends Component {
         <Route exact path="/view-meet" component={Ourcalendar} />
         <Route exact path="/metrics" component={Metrics} />
         <Route exact path="/404" component={Pg404} />
-
       </Router>
     );
   }
