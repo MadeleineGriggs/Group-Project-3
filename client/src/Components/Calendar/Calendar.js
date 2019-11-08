@@ -36,11 +36,11 @@ export default class Ourcalendar extends React.Component {
             Populate Calendar - Check Console Log.
           </Button>
         <h1 className="section-title">View Your Meetings</h1>
-        <FullCalendar
-          defaultView="dayGridMonth"
-          plugins={[dayGridPlugin]}
-          contentHeight="auto"
-        />
+        <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} contentHeight="auto"   
+        events={[
+    { title: 'event 1', date: '2019-07-01' },
+    { title: 'event 2', date: '2019-07-02' }
+  ]}/>
         <br></br>
         <Button
           variant="contained"
