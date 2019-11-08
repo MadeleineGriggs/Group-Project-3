@@ -65,4 +65,13 @@ module.exports = function(app) {
       console.log("Authcheck didn't work.");
     }
   });
+
+
+
+  app.get("/api/all-meetings", function(req, res) {
+    db.Meeting.findAll({
+      attributes: ['date', 'start', 'durationH']
+    }).then( meetings => (res.json(meetings))
+    )
+  });
 };
