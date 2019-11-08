@@ -7,6 +7,7 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
+import moment from 'moment';
 
 var handleMeetingCreation = event => {
   event.preventDefault();
@@ -41,9 +42,14 @@ function ScheduleMeet(props) {
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <h3>Date of Meeting</h3>
         <DatePicker
+          openTo="year"
           id="newDate"
+          views={["year", "month", "date"]}
           value={selectedDate}
+          format="YYYY-MM-DD"
+          disablePast
           onChange={handleDateChange}
+
         />
         <h3>Start Time</h3>
         <TimePicker
