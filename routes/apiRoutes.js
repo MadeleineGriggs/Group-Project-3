@@ -67,6 +67,17 @@ module.exports = function(app) {
     }
   });
 
+  app.get("/api/users", function(req, res){
+    // console.log(req.query)
+    db.User.findAll({
+      where: {
+        company: `${req.query.company}`
+      },
+      attributes: ['name', 'email', 'id'],
+    }).then( users => (res.json(users))
+    )
+  });
+
 
 //API route to get all meetings. Used to populate the calendar display.
   app.get("/api/all-meetings", function(req, res) {

@@ -274,6 +274,11 @@ class Home extends Component {
                     Meeting Metrics
                   </Button>
                 </Grid>
+                <Grid item xs={3}>
+                  <Button variant="contained" color="primary" href="/contacts">
+                    Directory
+                  </Button>
+                </Grid>
               </Grid>
               </div>
             </Grid>

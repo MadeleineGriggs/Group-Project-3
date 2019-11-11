@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "username",
-    "password": "password",
+    "username": "root",
+    "password": "",
     "database": "spartandb",
     "host": "localhost",
     "dialect": "mysql"
