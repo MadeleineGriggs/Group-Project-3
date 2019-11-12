@@ -38,11 +38,11 @@ body {
 /* Styling for the Schedule Meet component */
 .meeting-picker {
   margin: 0 auto;
-  width: 50vw;
+  width: 80vw;
 }
 
 .meeting-title {
-  margin-top: 4rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -50,4 +50,8 @@ body {
   margin-top: 3rem;
 }
 
+.schedule-meeting-area {
+  background-color: white;
+  padding: 1rem;
+}
 

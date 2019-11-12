@@ -6,12 +6,24 @@ import {
   TimePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
+import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import useFetch from "./Hooks/userFind.js";
+import NavBar from "./navBar.js";
+
 var handleMeetingCreation = event => {
   event.preventDefault();
+
   let newDate = document.getElementById("newDate");
   let newTitle = document.getElementById("newTitle");
   let newMeetStart = document.getElementById("newDateStart");
@@ -33,13 +45,35 @@ var handleMeetingCreation = event => {
   });
 };
 
+var handleSelectUsers = event => {
+  event.preventDefault();
+
+
+}
+
 function ScheduleMeet(props) {
+
+  const userData = useFetch("/api/all-users");
+  console.log(userData);
   const [selectedDate, handleDateChange] = useState(new Date());
   console.log(selectedDate);
-
+  
   return (
+    <>
+    <NavBar>
+</NavBar>
     <div className="meeting-picker">
+      
       <h1 className="meeting-title">Schedule a New Meeting</h1>
+      <Grid container 
+        spacing={3}
+        direction="row"
+        justify="space-around"
+        className="schedule-meeting-area">
+
+
+      <Grid item xs={4}>
+
       <h2>Select your date and time for the meeting here.</h2>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <h3>Date of Meeting</h3>
@@ -60,15 +94,15 @@ function ScheduleMeet(props) {
           value={selectedDate}
           onChange={handleDateChange}
         />
+        <h3>End Time</h3>
+                <TimePicker
+          id="standard-basic"
+          id="newDateEnd"
+          onChange={handleDateChange}
+        />
 
-        <h3>Duration (Hours)</h3>
+        {/* <h3>Duration (Hours)</h3>
         <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
-          {/* <input
-            className="MuiInputBase-input MuiInput-input"
-            id="durationH"
-            type="text"
-            text="Please enter duration"
-          /> */}
           <select id="durationH" name="hours">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -86,19 +120,13 @@ function ScheduleMeet(props) {
         </div>
         <h3>Duration (Minutes)</h3>
         <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
-          {/* <input
-            className="MuiInputBase-input MuiInput-input"
-            id="durationM"
-            type="text"
-            text="Please enter duration"
-          /> */}
           <select id="durationM" name="minutes">
             <option value="0">0</option>
             <option value="15">15</option>
             <option value="30">30</option>
             <option value="45">45</option>
           </select>
-        </div>
+        </div> */}
           <br></br>
           <br></br>
         <TextField
@@ -114,13 +142,34 @@ function ScheduleMeet(props) {
             onClick={handleMeetingCreation}
             variant="contained"
             color="primary"
-            // href="/metrics"
           >
             Book Meeting
           </Button>
         </div>
       </MuiPickersUtilsProvider>
+      </Grid>
+
+      <Grid item xs={4}>
+
+        <h2>Meeting Attendees: </h2>
+      <FormControl component="fieldset" className='formControl'>
+        <FormLabel component="legend">Assign Members</FormLabel>
+        <FormGroup>
+        {userData.map((item, key) =>
+                  <FormControlLabel
+                  control={<Checkbox value={item.id} className="user-checked"/>}
+                  label={item.name}
+                />
+        )}
+
+        </FormGroup>
+      </FormControl>
+      </Grid>
+
+
+      </Grid>
     </div>
+    </>
   );
 }
 
