@@ -1,5 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
   var Meeting = sequelize.define("Meeting", {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     date: {
       type: DataTypes.STRING,
       required: true
@@ -8,12 +13,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       required: true
     },
-    durationH: {
-      type: DataTypes.INTEGER,
-      required: true
-    },
-    durationM: {
-      type: DataTypes.INTEGER,
+    end: {
+      type: DataTypes.STRING,
       required: true
     },
     title: {

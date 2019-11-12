@@ -53,5 +53,6 @@ body {
 .schedule-meeting-area {
   background-color: white;
   padding: 1rem;
+  margin-bottom: 5rem !important;
 }
 

@@ -1,61 +1,81 @@
+// eslint-disable-next-line
 import React, { useState } from "react";
 import MomentUtils from "@date-io/moment";
 import "./home.css";
+// Material UI imports
+import Grid from '@material-ui/core/Grid';
+import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+// MaterialUI pickers imports.
 import {
   DatePicker,
   TimePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
-import Grid from '@material-ui/core/Grid';
-import Button from "@material-ui/core/Button";
-import TextField from '@material-ui/core/TextField';
-import moment from 'moment';
-
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
-
+//Local imports - hooks, other components.
 import useFetch from "./Hooks/userFind.js";
 import NavBar from "./navBar.js";
 
+
+//Creates a new meeting.
 var handleMeetingCreation = event => {
   event.preventDefault();
 
   let newDate = document.getElementById("newDate");
   let newTitle = document.getElementById("newTitle");
-  let newMeetStart = document.getElementById("newDateStart");
-  let durationHour = document.getElementById("durationH");
-  let durationMin = document.getElementById("durationM");
+  let newMeetStart = document.getElementById("standard-basic newDateStart");
+  let newMeetEnd = document.getElementById("standard-basic newDateEnd");
   const meetingData = {
     date: newDate.value,
     start: newMeetStart.value,
-    durationH: durationHour.value,
-    durationM: durationMin.value,
+    end: newMeetEnd.value,
     title: newTitle.value,
-    description: "work, god damn you"
+    description: "work, please."
   };
-  console.log(meetingData);
+  // console.log(meetingData);
   fetch("/api/new-meeting", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(meetingData)
-  });
+  }).then(response => response.json()).then(data => createAttendees(data));
 };
 
-var handleSelectUsers = event => {
-  event.preventDefault();
-
-
+//Gets the meeting id from the created meeting.
+//Populates an array of users that the person has checked to include.
+//API call does a bulk create to the attendees table.
+const createAttendees = meetingID => {
+  console.log(meetingID);
+  let meetID = meetingID;
+  let attendArray = [];
+  let users = document.getElementsByClassName("PrivateSwitchBase-checked-305");
+  for (var i = 0, len = users.length; i < len; i++) {
+    let attendeeObj = {
+      MeetingId: meetID,
+      UserId: users[i].dataset.userid
+    }
+      attendArray.push(attendeeObj);
+      console.log("Attendee user id: " + users[i].dataset.userid);
+  }
+  fetch("/api/all-attendees", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(attendArray)
+  }).then(response => response.json());
+  console.log(attendArray);
 }
+
 
 function ScheduleMeet(props) {
 
   const userData = useFetch("/api/all-users");
   console.log(userData);
   const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedDate2, handleDateChange2] = useState(new Date())
   console.log(selectedDate);
   
   return (
@@ -76,6 +96,14 @@ function ScheduleMeet(props) {
 
       <h2>Select your date and time for the meeting here.</h2>
       <MuiPickersUtilsProvider utils={MomentUtils}>
+      <h3>Meeting Title</h3>
+      <TextField
+          name="Meeting Title"
+          id="newTitle"
+          className="meeting-title-field"
+          label="Meeting #1..."
+        />
+
         <h3>Date of Meeting</h3>
         <DatePicker
           openTo="year"
@@ -89,51 +117,15 @@ function ScheduleMeet(props) {
         />
         <h3>Start Time</h3>
         <TimePicker
-          id="standard-basic"
-          id="newDateStart"
+          id="standard-basic newDateStart"
           value={selectedDate}
           onChange={handleDateChange}
         />
         <h3>End Time</h3>
-                <TimePicker
-          id="standard-basic"
-          id="newDateEnd"
-          onChange={handleDateChange}
-        />
-
-        {/* <h3>Duration (Hours)</h3>
-        <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
-          <select id="durationH" name="hours">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-        </div>
-        <h3>Duration (Minutes)</h3>
-        <div className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl">
-          <select id="durationM" name="minutes">
-            <option value="0">0</option>
-            <option value="15">15</option>
-            <option value="30">30</option>
-            <option value="45">45</option>
-          </select>
-        </div> */}
-          <br></br>
-          <br></br>
-        <TextField
-          name="Meeting Title"
-          id="newTitle"
-          className="meeting-title-field"
-          label="Meeting Title"
+        <TimePicker
+        id="standard-basic newDateEnd"
+          value={selectedDate2}
+          onChange={handleDateChange2}
         />
 
         <div className="meeting-submit-btn">
@@ -156,12 +148,11 @@ function ScheduleMeet(props) {
         <FormLabel component="legend">Assign Members</FormLabel>
         <FormGroup>
         {userData.map((item, key) =>
-                  <FormControlLabel
-                  control={<Checkbox value={item.id} className="user-checked"/>}
-                  label={item.name}
-                />
+            <FormControlLabel
+            control={<Checkbox value={item.id} key={item.id} data-userid={item.id} className="user-checked"/>}
+            label={item.name}
+            />
         )}
-
         </FormGroup>
       </FormControl>
       </Grid>

@@ -33,26 +33,37 @@ module.exports = function(app) {
     });
   });
 
-  //Creates a new meeting.
+  //Creates a new meeting. Sends back the ID of the meeting just created.
   app.post("/api/new-meeting", function(req, res) {
     db.Meeting.create({
       date: req.body.date,
       start: req.body.start,
-      durationH: req.body.durationH,
-      durationM: req.body.durationM,
+      end: req.body.end,
       title: req.body.title,
       attendees: req.body.attendees,
       description: req.body.description
+    }).then(result => {
+      res.json(result.get('id'))
+  })
+  });
+
+
+
+  //Creates new attendees for meetings.
+  app.post("/api/attendees", function(req, res) {
+    db.Attendees.create({
+      MeetingId: req.body.mId,
+      UserId: req.body.uId
     }).then(function(dbItem) {
       res.json(dbItem);
     });
   });
 
-  //Creates new attendees for meetings.
-  app.post("/api/attendees", function(req, res) {
-    db.Attendees.create({
-      mId: req.body.mId,
-      uId: req.body.uId
+  app.post("/api/all-attendees", function(req, res) {
+
+    console.log(req.body);
+    db.Attendees.bulkCreate( req.body, {
+      returning: true
     }).then(function(dbItem) {
       res.json(dbItem);
     });
@@ -106,6 +117,12 @@ module.exports = function(app) {
     }
 
   });
+
+  app.get("api/new-attend", function(req, res) {
+    if (req.isAuthenticated()) {
+      console.log(req.user.id);
+    }
+  })
 
 
 };
