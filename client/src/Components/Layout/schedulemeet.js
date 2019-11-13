@@ -29,14 +29,17 @@ var handleMeetingCreation = event => {
   let newDate = document.getElementById("newDate");
   let newTitle = document.getElementById("newTitle");
   let newMeetStart = document.getElementById("standard-basic newDateStart");
+  let newMeetFullStart = newDate.value + "T" + newMeetStart.value + ":00"
   let newMeetEnd = document.getElementById("standard-basic newDateEnd");
+  let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00"
   const meetingData = {
     date: newDate.value,
-    start: newMeetStart.value,
-    end: newMeetEnd.value,
+    start: newMeetFullStart,
+    end: newMeetFullEnd,
     title: newTitle.value,
     description: "work, please."
   };
+  // console.log(newMeetFullStart)
   // console.log(meetingData);
   fetch("/api/new-meeting", {
     method: "POST",
@@ -73,10 +76,10 @@ const createAttendees = meetingID => {
 function ScheduleMeet(props) {
 
   const userData = useFetch("/api/all-users");
-  console.log(userData);
+  // console.log(userData);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [selectedDate2, handleDateChange2] = useState(new Date())
-  console.log(selectedDate);
+  // console.log(selectedDate);
   
   return (
     <>
@@ -117,13 +120,20 @@ function ScheduleMeet(props) {
         />
         <h3>Start Time</h3>
         <TimePicker
+          clearable
+          ampm={false}
+          label="24 hours"
           id="standard-basic newDateStart"
+          
           value={selectedDate}
           onChange={handleDateChange}
         />
         <h3>End Time</h3>
         <TimePicker
-        id="standard-basic newDateEnd"
+          clearable
+          ampm={false}
+          label="24 hours"
+          id="standard-basic newDateEnd"
           value={selectedDate2}
           onChange={handleDateChange2}
         />

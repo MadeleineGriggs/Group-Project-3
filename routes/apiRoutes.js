@@ -47,8 +47,6 @@ module.exports = function(app) {
   })
   });
 
-
-
   //Creates new attendees for meetings.
   app.post("/api/attendees", function(req, res) {
     db.Attendees.create({
@@ -60,7 +58,6 @@ module.exports = function(app) {
   });
 
   app.post("/api/all-attendees", function(req, res) {
-
     console.log(req.body);
     db.Attendees.bulkCreate( req.body, {
       returning: true
@@ -87,12 +84,20 @@ module.exports = function(app) {
   //API route to get all meetings. Used to populate the calendar display.
   app.get("/api/all-meetings", function(req, res) {
     db.Meeting.findAll({
-
-      attributes: ['title', 'date']
+      attributes: ['id', 'title', 'date', 'start', 'end']
     }).then( meetings => (res.json(meetings))
     )
   });
 
+  //API route which fetches a specific meeting to display more information in the calendar modal
+  app.get("/api/modal-meeting", function(req, res) {
+    db.Meeting.findOne({
+      where: {
+        Id: req.body.meetingId
+      },
+      attributes: ['id', 'title', 'start', 'end']
+    }).then(meeting => res.json(meeting))
+  })
 
   //API route to get all users who belong to the same company as the user who is logged in
   //used to populate the meeting scheduler.
