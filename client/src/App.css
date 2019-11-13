@@ -56,3 +56,14 @@ body {
   margin-bottom: 5rem !important;
 }
 
+/* Styling for the Calendar area */
+
+.meeting-modal-container {
+  background-color: var(--greige);
+  width: 50rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  padding: 3rem;
+}

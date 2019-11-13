@@ -90,12 +90,12 @@ module.exports = function(app) {
   });
 
   //API route which fetches a specific meeting to display more information in the calendar modal
-  app.get("/api/modal-meeting", function(req, res) {
+  app.post("/api/modal-meeting", function(req, res) {
     db.Meeting.findOne({
       where: {
         Id: req.body.meetingId
       },
-      attributes: ['id', 'title', 'start', 'end']
+      attributes: ['id', 'title', 'start', 'end', 'description']
     }).then(meeting => res.json(meeting))
   })
 
