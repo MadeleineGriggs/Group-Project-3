@@ -2,6 +2,7 @@ import React from "react";
 
 import Button from "@material-ui/core/Button";
 import Modal from '@material-ui/core/Modal';
+import Grid from "@material-ui/core/Grid";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -27,23 +28,21 @@ export default class Ourcalendar extends React.Component {
       modalId: "",
       modalStart: "",
       modalEnd: "",
-      modalDesc: ""
+      modalDesc: "",
+      attendees: []
     }
   }
 
   // Fetches the meetings from the database with an API call.
   fetchMeetings() {
-    // event.preventDefault();
-
     fetch("/api/all-meetings")
-    .then( res => res.json())
-    .then((data) => {
-      
+      .then( res => res.json())
+      .then((data) => {
         this.setState({meetings: data})
-        console.log(this.state.meetings)
-    })
-    .catch(console.log)
+      })
+      .catch(console.log)
   };
+
 
   //When the fetch has returned the meetings, mount it to the state. This fills in the calendar.
   componentDidMount() {
@@ -52,27 +51,70 @@ export default class Ourcalendar extends React.Component {
   
 
   toggleEventModal(event) {
+    //Clear out the modal window when it gets closed.
+    if(this.state.eventModalOpen) {
+      this.setState({
+        attendees: [],
+        modalTitle: "",
+        modalId: "",
+        modalStart: "",
+        modalEnd: "",
+        modalDesc: ""
+      })
+    }
+    //Toggles the event modal open and closed.
     this.setState({
       eventModalOpen: !this.state.eventModalOpen
     })
   };
 
+  populateUsersModal(meetingID) {
+    //Fetch the attendees user's id for the meeting id given.
+    fetch("/api/modal-attendees", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(meetingID)
+    })
+      .then( res => res.json())
+      .then((attendData) => {
+        for (var i = 0, len = attendData.length; i < len; i++) {
+          const attendeeObj = {
+            UserId: attendData[i].UserId
+          };
+          //Fetch information from the user's table based on the user id retrieved earlier.
+          fetch("/api/modal-attendee-single", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(attendeeObj)
+          })
+            .then( res => res.json())
+            .then((data) => {
+              //Make each user into an object, then spread into attendees state.
+              const individualAttend = {
+                name: data.name,
+                company: data.company,
+                email: data.email
+              }
+              this.setState({
+                attendees: [...this.state.attendees, individualAttend]
+              })
+            });
+        }
+      });
+  }
+
+  //When the user clicks on a calendar event, this function fetches more information about the 
+  //Meeting and displays it in a modal window.
   handleEventClick = ({ event, el }) => {
-console.log(event.id)
     const meetingID = {
       meetingId: event.id
     }
-    this.toggleEventModal(event);
-    console.log(meetingID)
     fetch("/api/modal-meeting", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(meetingID)
     }).then( res => res.json())
     .then((data) => {
-      console.log( "Event info:" + JSON.stringify(data))
-      console.log("Event Title" + JSON.stringify(data.title))
-
       this.setState({
         modalTitle: JSON.stringify(data.title).replace(/"/g,""),
         modalId: JSON.stringify(data.id),
@@ -80,10 +122,9 @@ console.log(event.id)
         modalEnd: JSON.stringify(data.end).replace(/"/g,""),
         modalDesc: JSON.stringify(data.description).replace(/"/g,""),
       })
-      console.log(this.state.modalTitle)
-
+      this.populateUsersModal(meetingID)
+      this.toggleEventModal(event);
      });
-
   };
 
   render() {
@@ -92,44 +133,60 @@ console.log(event.id)
 <NavBar>
 </NavBar>
       <div className="calendarwrap">
-
         <Modal
           open={this.state.eventModalOpen}
           onClose={(e) => this.toggleEventModal(e)}
         >
           <div className="meeting-modal-container">
-            <h2>
-            {this.state.modalTitle}
-            </h2>
-            <h5>
-              Start: <Moment format="LLL">{this.state.modalStart}</Moment>
-            </h5>
-            <h5>
-              End: <Moment format="LLL">{this.state.modalEnd}</Moment>
-            </h5>
-            <h3>
-              Description
-            </h3>
-            <h5>
-            {this.state.modalDesc}
-            </h5>
-            
-          <Button onClick={(e) => this.toggleEventModal(e)}>Close</Button>
+            <Grid container spacing={3} direction="row" justify="space-around">
+              <Grid item xs={10}>
+                <h2>
+                  {this.state.modalTitle}
+                </h2>
+                <p>
+                  Start: <Moment format="LLL">{this.state.modalStart}</Moment>
+                </p>
+                <p>
+                  End: <Moment format="LLL">{this.state.modalEnd}</Moment>
+                </p>
+              </Grid>
+              <Grid item xs={4}>
+                <h3>
+                  Description
+                </h3>
+                <p>
+                  {this.state.modalDesc}
+                </p>
+              </Grid>
+              <Grid item xs={4}>
+                <h3>
+                    Attendees
+                </h3>
+                <div>
+                  {this.state.attendees.map(attendee =>
+                    {
+                      return <p key={attendee.email}>{attendee.name}, {attendee.email}</p>
+                    }
+                  )}
+                </div>
+              </Grid>
+              <Grid item xs={10}>
+                <Button onClick={(e) => this.toggleEventModal(e)}>Close</Button>
+              </Grid>
+            </Grid>
           </div>
         </Modal>
 
-        {/* <div>{this.state.meetings.map((item, key) =>
-            <div item={item.date} key={item.id}>{item.title}, {item.date}</div>
-        )}</div> */}
         <h1 className="section-title">View Your Meetings</h1>
         <FullCalendar 
-        defaultView="dayGridMonth" 
-        plugins={[interaction, dayGridPlugin]} 
-        contentHeight="auto"   
-        selectable={true}
-        events={this.state.meetings}
-        eventRender={this.handleEventRender}
-        eventClick={this.handleEventClick}/>
+          defaultView="dayGridMonth" 
+          plugins={[interaction, dayGridPlugin]} 
+          contentHeight="auto"   
+          selectable={true}
+          events={this.state.meetings}
+          eventRender={this.handleEventRender}
+          eventClick={this.handleEventClick}
+        />
         <br></br>
         <Button
           variant="contained"
