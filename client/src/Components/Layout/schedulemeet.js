@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import MomentUtils from "@date-io/moment";
 import "./home.css";
 // Material UI imports
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import TextField from '@material-ui/core/TextField';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import TextField from "@material-ui/core/TextField";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 // MaterialUI pickers imports.
 import {
   DatePicker,
@@ -21,7 +21,6 @@ import {
 import useFetch from "./Hooks/userFind.js";
 import NavBar from "./navBar.js";
 
-
 //Creates a new meeting.
 var handleMeetingCreation = event => {
   event.preventDefault();
@@ -31,13 +30,15 @@ var handleMeetingCreation = event => {
   let newMeetStart = document.getElementById("standard-basic newDateStart");
   let newMeetFullStart = newDate.value + "T" + newMeetStart.value + ":00"
   let newMeetEnd = document.getElementById("standard-basic newDateEnd");
+
   let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00"
+
   const meetingData = {
     date: newDate.value,
     start: newMeetFullStart,
     end: newMeetFullEnd,
     title: newTitle.value,
-    description: "work, please."
+    description: newDesc.value
   };
   // console.log(newMeetFullStart)
   // console.log(meetingData);
@@ -45,7 +46,9 @@ var handleMeetingCreation = event => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(meetingData)
-  }).then(response => response.json()).then(data => createAttendees(data));
+  })
+    .then(response => response.json())
+    .then(data => createAttendees(data));
 };
 
 //Gets the meeting id from the created meeting.
@@ -55,14 +58,14 @@ const createAttendees = meetingID => {
   console.log(meetingID);
   let meetID = meetingID;
   let attendArray = [];
-  let users = document.getElementsByClassName("PrivateSwitchBase-checked-305");
+  let users = document.getElementsByClassName("PrivateSwitchBase-checked-311");
   for (var i = 0, len = users.length; i < len; i++) {
     let attendeeObj = {
       MeetingId: meetID,
       UserId: users[i].dataset.userid
-    }
-      attendArray.push(attendeeObj);
-      console.log("Attendee user id: " + users[i].dataset.userid);
+    };
+    attendArray.push(attendeeObj);
+    console.log("Attendee user id: " + users[i].dataset.userid);
   }
   fetch("/api/all-attendees", {
     method: "POST",
@@ -70,11 +73,9 @@ const createAttendees = meetingID => {
     body: JSON.stringify(attendArray)
   }).then(response => response.json());
   console.log(attendArray);
-}
-
+};
 
 function ScheduleMeet(props) {
-
   const userData = useFetch("/api/all-users");
   // console.log(userData);
   const [selectedDate, handleDateChange] = useState(new Date());
