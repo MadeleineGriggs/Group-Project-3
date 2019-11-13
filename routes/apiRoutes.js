@@ -3,7 +3,6 @@ var passport = require("../config/passport");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function(app) {
-
   //Route to create a new project.
   app.post("/api/project", function(req, res) {
     db.Project.create({
@@ -43,11 +42,9 @@ module.exports = function(app) {
       attendees: req.body.attendees,
       description: req.body.description
     }).then(result => {
-      res.json(result.get('id'))
-  })
+      res.json(result.get("id"));
+    });
   });
-
-
 
   //Creates new attendees for meetings.
   app.post("/api/attendees", function(req, res) {
@@ -60,9 +57,8 @@ module.exports = function(app) {
   });
 
   app.post("/api/all-attendees", function(req, res) {
-
     console.log(req.body);
-    db.Attendees.bulkCreate( req.body, {
+    db.Attendees.bulkCreate(req.body, {
       returning: true
     }).then(function(dbItem) {
       res.json(dbItem);
@@ -87,42 +83,36 @@ module.exports = function(app) {
   //API route to get all meetings. Used to populate the calendar display.
   app.get("/api/all-meetings", function(req, res) {
     db.Meeting.findAll({
-
-      attributes: ['title', 'date']
-    }).then( meetings => (res.json(meetings))
-    )
+      attributes: ["title", "date", "description"]
+    }).then(meetings => res.json(meetings));
   });
-
 
   //API route to get all users who belong to the same company as the user who is logged in
   //used to populate the meeting scheduler.
   app.get("/api/all-users", function(req, res) {
-    if(req.isAuthenticated()) {
-      console.log("authcheck")
+    if (req.isAuthenticated()) {
+      console.log("authcheck");
       db.User.findOne({
         where: {
           Id: req.user.id
         },
-        attributes: ['company']
-      }).then((user) => {
+        attributes: ["company"]
+      }).then(user => {
         db.User.findAll({
           where: {
             company: user.company
           },
-          attributes: ['id', 'name', 'company', 'email']
-        }).then(users => res.json(users))
-      })
+          attributes: ["id", "name", "company", "email"]
+        }).then(users => res.json(users));
+      });
     } else {
       res.json(["Authcheck didn't work. : oops"]);
     }
-
   });
 
   app.get("api/new-attend", function(req, res) {
     if (req.isAuthenticated()) {
       console.log(req.user.id);
     }
-  })
-
-
+  });
 };
