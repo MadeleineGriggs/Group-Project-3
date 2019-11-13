@@ -30,9 +30,8 @@ var handleMeetingCreation = event => {
   let newMeetStart = document.getElementById("standard-basic newDateStart");
   let newMeetFullStart = newDate.value + "T" + newMeetStart.value + ":00"
   let newMeetEnd = document.getElementById("standard-basic newDateEnd");
-
-  let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00"
-
+  let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00";
+  let newDesc = document.getElementById("newDesc");
   const meetingData = {
     date: newDate.value,
     start: newMeetFullStart,
@@ -107,7 +106,13 @@ function ScheduleMeet(props) {
           className="meeting-title-field"
           label="Meeting #1..."
         />
-
+      <h3>Meeting Description</h3>
+      <TextField
+          name="Meeting Description"
+          id="newDesc"
+          className="meeting-title-field"
+          label="A short summary..."
+        />
         <h3>Date of Meeting</h3>
         <DatePicker
           openTo="year"
