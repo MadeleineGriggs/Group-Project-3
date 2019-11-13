@@ -28,15 +28,19 @@ var handleMeetingCreation = event => {
   let newDate = document.getElementById("newDate");
   let newTitle = document.getElementById("newTitle");
   let newMeetStart = document.getElementById("standard-basic newDateStart");
+  let newMeetFullStart = newDate.value + "T" + newMeetStart.value + ":00"
   let newMeetEnd = document.getElementById("standard-basic newDateEnd");
-  let newDesc = document.getElementById("newDesc");
+
+  let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00"
+
   const meetingData = {
     date: newDate.value,
-    start: newMeetStart.value,
-    end: newMeetEnd.value,
+    start: newMeetFullStart,
+    end: newMeetFullEnd,
     title: newTitle.value,
     description: newDesc.value
   };
+  // console.log(newMeetFullStart)
   // console.log(meetingData);
   fetch("/api/new-meeting", {
     method: "POST",
@@ -73,100 +77,100 @@ const createAttendees = meetingID => {
 
 function ScheduleMeet(props) {
   const userData = useFetch("/api/all-users");
-  console.log(userData);
+  // console.log(userData);
   const [selectedDate, handleDateChange] = useState(new Date());
-  const [selectedDate2, handleDateChange2] = useState(new Date());
-  console.log(selectedDate);
-
+  const [selectedDate2, handleDateChange2] = useState(new Date())
+  // console.log(selectedDate);
+  
   return (
     <>
-      <NavBar></NavBar>
-      <div className="meeting-picker">
-        <h1 className="meeting-title">Schedule a New Meeting</h1>
-        <Grid
-          container
-          spacing={3}
-          direction="row"
-          justify="space-around"
-          className="schedule-meeting-area"
-        >
-          <Grid item xs={4}>
-            <h2>Select your date and time for the meeting here.</h2>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <h3>Meeting Title</h3>
-              <TextField
-                name="Meeting Title"
-                id="newTitle"
-                className="meeting-title-field"
-                label="Meeting #1..."
-              />
-              <h3>Meeting Description</h3>
-              <TextField
-                name="Meeting Description"
-                id="newDesc"
-                className="meeting-description-field"
-                label="Description..."
-              />
+    <NavBar>
+</NavBar>
+    <div className="meeting-picker">
+      
+      <h1 className="meeting-title">Schedule a New Meeting</h1>
+      <Grid container 
+        spacing={3}
+        direction="row"
+        justify="space-around"
+        className="schedule-meeting-area">
 
-              <h3>Date of Meeting</h3>
-              <DatePicker
-                openTo="year"
-                id="newDate"
-                views={["year", "month", "date"]}
-                value={selectedDate}
-                format="YYYY-MM-DD"
-                disablePast
-                onChange={handleDateChange}
-              />
-              <h3>Start Time</h3>
-              <TimePicker
-                id="standard-basic newDateStart"
-                value={selectedDate}
-                onChange={handleDateChange}
-              />
-              <h3>End Time</h3>
-              <TimePicker
-                id="standard-basic newDateEnd"
-                value={selectedDate2}
-                onChange={handleDateChange2}
-              />
 
-              <div className="meeting-submit-btn">
-                <Button
-                  id="meetSub"
-                  onClick={handleMeetingCreation}
-                  variant="contained"
-                  color="primary"
-                >
-                  Book Meeting
-                </Button>
-              </div>
-            </MuiPickersUtilsProvider>
-          </Grid>
+      <Grid item xs={4}>
 
-          <Grid item xs={4}>
-            <h2>Meeting Attendees: </h2>
-            <FormControl component="fieldset" className="formControl">
-              <FormLabel component="legend">Assign Members</FormLabel>
-              <FormGroup>
-                {userData.map((item, key) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        value={item.id}
-                        key={item.id}
-                        data-userid={item.id}
-                        className="user-checked"
-                      />
-                    }
-                    label={item.name}
-                  />
-                ))}
-              </FormGroup>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </div>
+      <h2>Select your date and time for the meeting here.</h2>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+      <h3>Meeting Title</h3>
+      <TextField
+          name="Meeting Title"
+          id="newTitle"
+          className="meeting-title-field"
+          label="Meeting #1..."
+        />
+
+        <h3>Date of Meeting</h3>
+        <DatePicker
+          openTo="year"
+          id="newDate"
+          views={["year", "month", "date"]}
+          value={selectedDate}
+          format="YYYY-MM-DD"
+          disablePast
+          onChange={handleDateChange}
+
+        />
+        <h3>Start Time</h3>
+        <TimePicker
+          clearable
+          ampm={false}
+          label="24 hours"
+          id="standard-basic newDateStart"
+          
+          value={selectedDate}
+          onChange={handleDateChange}
+        />
+        <h3>End Time</h3>
+        <TimePicker
+          clearable
+          ampm={false}
+          label="24 hours"
+          id="standard-basic newDateEnd"
+          value={selectedDate2}
+          onChange={handleDateChange2}
+        />
+
+        <div className="meeting-submit-btn">
+          <Button
+            id="meetSub"
+            onClick={handleMeetingCreation}
+            variant="contained"
+            color="primary"
+          >
+            Book Meeting
+          </Button>
+        </div>
+      </MuiPickersUtilsProvider>
+      </Grid>
+
+      <Grid item xs={4}>
+
+        <h2>Meeting Attendees: </h2>
+      <FormControl component="fieldset" className='formControl'>
+        <FormLabel component="legend">Assign Members</FormLabel>
+        <FormGroup>
+        {userData.map((item, key) =>
+            <FormControlLabel
+            control={<Checkbox value={item.id} key={item.id} data-userid={item.id} className="user-checked"/>}
+            label={item.name}
+            />
+        )}
+        </FormGroup>
+      </FormControl>
+      </Grid>
+
+
+      </Grid>
+    </div>
     </>
   );
 }

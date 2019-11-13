@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import "./home.css";
-import Button from "@material-ui/core/Button";
+
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
 
 import Grid from "@material-ui/core/Grid";
 
 import NavBar from "./navBar.js";
+
 class Home extends Component {
   render() {
     return (

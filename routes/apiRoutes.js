@@ -83,9 +83,21 @@ module.exports = function(app) {
   //API route to get all meetings. Used to populate the calendar display.
   app.get("/api/all-meetings", function(req, res) {
     db.Meeting.findAll({
-      attributes: ["title", "date", "description"]
-    }).then(meetings => res.json(meetings));
+
+      attributes: ['id', 'title', 'date', 'start', 'end', "description"]
+    }).then( meetings => (res.json(meetings))
+    )
   });
+
+  //API route which fetches a specific meeting to display more information in the calendar modal
+  app.get("/api/modal-meeting", function(req, res) {
+    db.Meeting.findOne({
+      where: {
+        Id: req.body.meetingId
+      },
+      attributes: ['id', 'title', 'start', 'end']
+    }).then(meeting => res.json(meeting))
+  })
 
   //API route to get all users who belong to the same company as the user who is logged in
   //used to populate the meeting scheduler.
