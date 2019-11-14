@@ -22,7 +22,7 @@ import useFetch from "./Hooks/userFind.js";
 import NavBar from "./navBar.js";
 
 //Creates a new meeting.
-var handleMeetingCreation = event => {
+const handleMeetingCreation = (event, userData) => {
   event.preventDefault();
 
   let newDate = document.getElementById("newDate");
@@ -39,52 +39,49 @@ var handleMeetingCreation = event => {
     title: newTitle.value,
     description: newDesc.value
   };
-  // console.log(newMeetFullStart)
-  // console.log(meetingData);
   fetch("/api/new-meeting", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(meetingData)
   })
     .then(response => response.json())
-    .then(data => createAttendees(data));
+    .then(data => createAttendees(data, userData));
 };
 
 //Gets the meeting id from the created meeting.
 //Populates an array of users that the person has checked to include.
 //API call does a bulk create to the attendees table.
-const createAttendees = meetingID => {
-  console.log(meetingID);
+const createAttendees = (meetingID, userData) => {
   let meetID = meetingID;
   let attendArray = [];
-  let users = document.getElementsByClassName("PrivateSwitchBase-checked-311");
-  for (var i = 0, len = users.length; i < len; i++) {
-    let attendeeObj = {
-      MeetingId: meetID,
-      UserId: users[i].dataset.userid
-    };
-    attendArray.push(attendeeObj);
-    console.log("Attendee user id: " + users[i].dataset.userid);
-  }
+
+  // filter list of users to checked users only, then map to correct object structure
+  attendArray = userData.filter(user => user.checked).map(user => ({MeetingId: meetingID, UserId: user.id}))
   fetch("/api/all-attendees", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(attendArray)
   }).then(response => response.json());
-  console.log(attendArray);
 };
 
+const handleCheckChange = (event, userData, key, setUserData) => {
+  userData[key].checked = event.target.checked
+  setUserData(userData)
+}
+
 function ScheduleMeet(props) {
-  const userData = useFetch("/api/all-users");
-  // console.log(userData);
+  const fetchData = useFetch("/api/all-users")
+  const userData = fetchData[0]
+  const setUserData = fetchData[1]
+
   const [selectedDate, handleDateChange] = useState(new Date());
   const [selectedDate2, handleDateChange2] = useState(new Date())
-  // console.log(selectedDate);
+
   
   return (
     <>
     <NavBar>
-</NavBar>
+    </NavBar>
     <div className="meeting-picker">
       
       <h1 className="meeting-title">Schedule a New Meeting</h1>
@@ -147,7 +144,7 @@ function ScheduleMeet(props) {
         <div className="meeting-submit-btn">
           <Button
             id="meetSub"
-            onClick={handleMeetingCreation}
+            onClick={(event) => handleMeetingCreation(event, userData)}
             variant="contained"
             color="primary"
           >
@@ -165,8 +162,9 @@ function ScheduleMeet(props) {
         <FormGroup>
         {userData.map((item, key) =>
             <FormControlLabel
-            control={<Checkbox value={item.id} key={item.id} data-userid={item.id} className="user-checked"/>}
-            label={item.name}
+              control={<Checkbox value={item.id} key={item.id} data-userid={item.id} onChange={(event) => handleCheckChange(event, userData, key, setUserData)}/>}
+              label={item.name}
+              key={key}
             />
         )}
         </FormGroup>

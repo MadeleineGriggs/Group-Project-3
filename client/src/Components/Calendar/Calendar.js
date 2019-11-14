@@ -29,24 +29,62 @@ export default class Ourcalendar extends React.Component {
       modalStart: "",
       modalEnd: "",
       modalDesc: "",
-      attendees: []
+      attendees: [],
+      userId: ""
     }
   }
 
   // Fetches the meetings from the database with an API call.
-  fetchMeetings() {
-    fetch("/api/all-meetings")
+  // fetchMeetings() {
+  //   fetch("/api/all-meetings")
+  //     .then( res => res.json())
+  //     .then((data) => {
+  //       this.setState({meetings: data})
+  //     })
+  //     .catch(console.log)
+  // };
+
+  fetchYourMeetings() {
+    fetch("/api/your-meetings")
       .then( res => res.json())
       .then((data) => {
-        this.setState({meetings: data})
+        // this.setState({userId: data})
+        console.log(data)
+        for (var i = 0, len = data.length; i < len; i++) {
+          const MeetingObj = {
+            MeetingId: data[i].MeetingId
+          };
+          console.log(MeetingObj)
+          //Fetch information from the user's table based on the user id retrieved earlier.
+          fetch("/api/your-meetings/single", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(MeetingObj)
+          })
+            .then( res => res.json())
+            .then((data) => {
+              //Make each user into an object, then spread into attendees state.
+              const individualMeeting = {
+                id: data.id,
+                title: data.title,
+                date: data.date,
+                start: data.start,
+                end: data.end,
+                description: data.description
+              }
+              this.setState({
+                meetings: [...this.state.meetings, individualMeeting]
+              })
+              console.log(this.state.meetings)
+            });
+        }
       })
       .catch(console.log)
   };
 
-
   //When the fetch has returned the meetings, mount it to the state. This fills in the calendar.
   componentDidMount() {
-    this.fetchMeetings();
+    this.fetchYourMeetings();
   }
   
 
@@ -178,6 +216,7 @@ export default class Ourcalendar extends React.Component {
         </Modal>
 
         <h1 className="section-title">View Your Meetings</h1>
+
         <FullCalendar 
           defaultView="dayGridMonth" 
           plugins={[interaction, dayGridPlugin]} 

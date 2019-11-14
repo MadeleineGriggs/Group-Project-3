@@ -88,6 +88,30 @@ module.exports = function(app) {
     )
   });
 
+  //If the user is logged in, search the attendees table for the meetings they are booked for and
+  // send back their ids.
+  app.get("/api/your-meetings", function(req, res) {
+    if (req.isAuthenticated()) {
+      db.Attendees.findAll({
+        where: {
+          UserId: req.user.id
+        },
+        attributes: ["MeetingId"]
+      }).then(meeting => res.json(meeting))
+    } else {
+      res.json(["User is not logged in."]);
+    }
+  })
+
+  app.post("/api/your-meetings/single", function(req, res) {
+    db.Meeting.findOne({
+      where: {
+        Id: req.body.MeetingId
+      },
+      attributes: ['id', 'title', 'date', 'start', 'end', 'description']
+    }).then(meeting => res.json(meeting))
+  })
+
   //API route which fetches a specific meeting to display more information in the calendar modal
   app.post("/api/modal-meeting", function(req, res) {
     db.Meeting.findOne({
@@ -108,6 +132,7 @@ module.exports = function(app) {
     }).then(meeting => res.json(meeting))
   })
 
+//Fetches a single attendee of a meeting and returns it's attributes, used to populate the calendar modal window.
   app.post("/api/modal-attendee-single", function(req, res) {
     db.User.findOne({
       where: {
@@ -136,7 +161,7 @@ module.exports = function(app) {
         }).then(users => res.json(users));
       });
     } else {
-      res.json(["Authcheck didn't work. : oops"]);
+      res.json(["User is not logged in."]);
     }
   });
 
