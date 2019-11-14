@@ -87,6 +87,29 @@ module.exports = function(app) {
     }).then(meetings => res.json(meetings));
   });
 
+  //API route to get all attendees, used in metrics.
+  app.get("/api/get-attendees", function(req, res) {
+    db.Attendees.findAll({
+      attributes: ["MeetingId", "UserId"]
+    }).then(attendees => res.json(attendees));
+  });
+
+  //API route to get meeting times
+  app.get("/api/get-meetings", function(req, res) {
+    db.Meeting.findAll({
+      attributes: ["start", "end"]
+    }).then(meetings => res.json(meetings));
+  });
+
+  // API route to get user salaries
+  app.get("/api/get-salaries", function(req, res) {
+    db.User.findAll({
+      attributes: ["hourlyrate"]
+    }).then(salaries => {
+      res.json(salaries);
+    });
+  });
+
   //API route to get all users who belong to the same company as the user who is logged in
   //used to populate the meeting scheduler.
   app.get("/api/all-users", function(req, res) {
