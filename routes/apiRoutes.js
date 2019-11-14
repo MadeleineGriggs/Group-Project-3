@@ -104,7 +104,7 @@ module.exports = function(app) {
   // API route to get user salaries
   app.get("/api/get-salaries", function(req, res) {
     db.User.findAll({
-      attributes: ["hourlyrate"]
+      attributes: ["id", "hourlyrate"]
     }).then(salaries => {
       res.json(salaries);
     });
