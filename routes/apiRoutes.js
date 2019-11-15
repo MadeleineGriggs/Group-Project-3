@@ -83,9 +83,11 @@ module.exports = function(app) {
   //API route to get all meetings. Used to populate the calendar display.
   app.get("/api/all-meetings", function(req, res) {
     db.Meeting.findAll({
-      attributes: ["title", "date", "description"]
-    }).then(meetings => res.json(meetings));
+      attributes: ['id', 'title', 'date', 'start', 'end', "description"]
+    }).then( meetings => (res.json(meetings))
+    )
   });
+
 
   //API route to get all attendees, used in metrics.
   app.get("/api/get-attendees", function(req, res) {
@@ -110,6 +112,60 @@ module.exports = function(app) {
     });
   });
 
+  //If the user is logged in, search the attendees table for the meetings they are booked for and
+  // send back their ids.
+  app.get("/api/your-meetings", function(req, res) {
+    if (req.isAuthenticated()) {
+      db.Attendees.findAll({
+        where: {
+          UserId: req.user.id
+        },
+        attributes: ["MeetingId"]
+      }).then(meeting => res.json(meeting))
+    } else {
+      res.json(["User is not logged in."]);
+    }
+  })
+
+  app.post("/api/your-meetings/single", function(req, res) {
+    db.Meeting.findOne({
+      where: {
+        Id: req.body.MeetingId
+      },
+      attributes: ['id', 'title', 'date', 'start', 'end', 'description']
+    }).then(meeting => res.json(meeting))
+  })
+
+  //API route which fetches a specific meeting to display more information in the calendar modal
+  app.post("/api/modal-meeting", function(req, res) {
+    db.Meeting.findOne({
+      where: {
+        Id: req.body.meetingId
+      },
+      attributes: ['id', 'title', 'start', 'end', 'description']
+    }).then(meeting => res.json(meeting))
+  })
+
+//Finds all the users who are attending any given meeting. Returns their userID.
+  app.post("/api/modal-attendees", function(req, res) {
+    db.Attendees.findAll({
+      where: {
+        MeetingId: req.body.meetingId
+      },
+      attributes: ['UserId']
+    }).then(meeting => res.json(meeting))
+  })
+
+//Fetches a single attendee of a meeting and returns it's attributes, used to populate the calendar modal window.
+  app.post("/api/modal-attendee-single", function(req, res) {
+    db.User.findOne({
+      where: {
+        Id: req.body.UserId
+      },
+      attributes: ["id", "name", "company", "email"]
+    }).then(user => res.json(user))
+  })
+
   //API route to get all users who belong to the same company as the user who is logged in
   //used to populate the meeting scheduler.
   app.get("/api/all-users", function(req, res) {
@@ -129,7 +185,7 @@ module.exports = function(app) {
         }).then(users => res.json(users));
       });
     } else {
-      res.json(["Authcheck didn't work. : oops"]);
+      res.json(["User is not logged in."]);
     }
   });
 
