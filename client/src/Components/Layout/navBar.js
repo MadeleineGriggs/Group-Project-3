@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./home.css";
+import logoImg from "../../images/helm-white.png"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
@@ -127,7 +128,7 @@ class NavBar extends Component {
             <Grid container spacing={3} direction="row" justify="space-around">
               <Grid item xs={4}>
                 <div className="login-container">
-                  <h2>Login</h2>
+                  <h2 className="schedule-subtitle">Login</h2>
                   <form onSubmit={e => this.handleUserLogin(e)}>
                     <InputLabel htmlFor="standard-email">Email</InputLabel>
                     <TextField
@@ -187,7 +188,7 @@ class NavBar extends Component {
               </Grid>
               <Grid item xs={4}>
                 <div className="sign-up-container">
-                  <h2>Signup</h2>
+                  <h2 className="schedule-subtitle">Signup</h2>
                   <form onSubmit={e => this.handleSubmitUser(e)}>
                     <InputLabel htmlFor="signupUsername">Username</InputLabel>
                     <TextField
@@ -268,23 +269,30 @@ class NavBar extends Component {
           <Toolbar>
             <Grid container spacing={3} direction="row" justify="center">
               <Grid item xs={3}>
-                <Typography variant="h5">
-                  <Link href="/" id="homelink">
-                    Spartan Meet
-                  </Link>
-                </Typography>
+                <div className="logo-center">
+                  
+                  <Typography variant="h5">
+                  <img src={logoImg} alt="logo" className="helm-logo"/>
+                    <Link href="/" id="homelink" className="nav-title">
+                    <span className="logo-text">
+                      Spartan Meet
+                      </span>
+                    </Link>
+                  </Typography>
+                </div>
               </Grid>
               <Grid item xs={3}>
-                <Typography variant="h6">About Us</Typography>
+                <Typography variant="h6" className="nav-bar-link">About Us</Typography>
               </Grid>
               <Grid item xs={3}>
-                <Typography variant="h6">Another Item</Typography>
+                <Typography variant="h6" className="nav-bar-link">Contact</Typography>
               </Grid>
               <Grid item xs={3}>
                 <Button
                   onClick={e => this.toggleModal(e)}
                   variant="contained"
                   color="primary"
+                  className="login-btn"
                 >
                   Login | Signup
                 </Button>

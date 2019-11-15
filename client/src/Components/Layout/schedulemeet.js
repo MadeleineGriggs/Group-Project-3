@@ -31,13 +31,16 @@ const handleMeetingCreation = (event, userData) => {
   let newMeetFullStart = newDate.value + "T" + newMeetStart.value + ":00"
   let newMeetEnd = document.getElementById("standard-basic newDateEnd");
   let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00";
-  let newDesc = document.getElementById("newDesc");
+  let newDescNewLines = document.getElementById("standard-multiline-flexible newDesc");
+  console.log(newDescNewLines.value)
+  let newDesc = (newDescNewLines.value).replace(/(\n)/g," ")
+  console.log(newDesc)
   const meetingData = {
     date: newDate.value,
     start: newMeetFullStart,
     end: newMeetFullEnd,
     title: newTitle.value,
-    description: newDesc.value
+    description: newDesc
   };
   fetch("/api/new-meeting", {
     method: "POST",
@@ -61,7 +64,8 @@ const createAttendees = (meetingID, userData) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(attendArray)
-  }).then(response => response.json());
+  }).then(response => response.json())
+  window.location.replace("/view-meet");
 };
 
 const handleCheckChange = (event, userData, key, setUserData) => {
@@ -92,51 +96,60 @@ function ScheduleMeet(props) {
         className="schedule-meeting-area">
 
 
-      <Grid item xs={4}>
+      <Grid item xs={6} className="scheduler-container">
 
-      <h2>Select your date and time for the meeting here.</h2>
+      <h2 className="schedule-title">Select your date and time for the meeting here.</h2>
       <MuiPickersUtilsProvider utils={MomentUtils}>
-      <h3>Meeting Title</h3>
+      <h3 className="schedule-subtitle">Meeting Title</h3>
       <TextField
           name="Meeting Title"
           id="newTitle"
+          fullWidth
           className="meeting-title-field"
           label="Meeting #1..."
         />
-      <h3>Meeting Description</h3>
+      <h3 className="schedule-subtitle">Meeting Description</h3>
       <TextField
           name="Meeting Description"
-          id="newDesc"
+          id="standard-multiline-flexible newDesc"
+          fullWidth
+          multiline
+          rowsMax="6"
           className="meeting-title-field"
           label="A short summary..."
         />
-        <h3>Date of Meeting</h3>
+        <h3 className="schedule-subtitle">Date of Meeting</h3>
         <DatePicker
           openTo="year"
           id="newDate"
+          fullWidth
           views={["year", "month", "date"]}
+          className="meeting-title-field"
           value={selectedDate}
           format="YYYY-MM-DD"
           disablePast
           onChange={handleDateChange}
 
         />
-        <h3>Start Time</h3>
+        <h3 className="schedule-subtitle">Start Time</h3>
         <TimePicker
           clearable
           ampm={false}
+          fullWidth
           label="24 hours"
           id="standard-basic newDateStart"
-          
+          className="meeting-title-field"
           value={selectedDate}
           onChange={handleDateChange}
         />
-        <h3>End Time</h3>
+        <h3 className="schedule-subtitle">End Time</h3>
         <TimePicker
           clearable
           ampm={false}
+          fullWidth
           label="24 hours"
           id="standard-basic newDateEnd"
+          className="meeting-title-field"
           value={selectedDate2}
           onChange={handleDateChange2}
         />
@@ -148,7 +161,7 @@ function ScheduleMeet(props) {
             variant="contained"
             color="primary"
           >
-            Book Meeting
+            Book Meeting and Go To Calendar
           </Button>
         </div>
       </MuiPickersUtilsProvider>
@@ -156,7 +169,7 @@ function ScheduleMeet(props) {
 
       <Grid item xs={4}>
 
-        <h2>Meeting Attendees: </h2>
+        <h2 className="schedule-title">Meeting Attendees: </h2>
       <FormControl component="fieldset" className='formControl'>
         <FormLabel component="legend">Assign Members</FormLabel>
         <FormGroup>

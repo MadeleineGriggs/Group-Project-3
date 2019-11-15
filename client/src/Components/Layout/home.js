@@ -4,6 +4,8 @@ import "./home.css";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
+// import splashImg from '../../public/images/meetingRoom.jpg'
+
 import NavBar from "./navBar.js";
 
 class Home extends Component {
@@ -13,16 +15,19 @@ class Home extends Component {
         <NavBar></NavBar>
 
         {/* The main content area of the home page. */}
-        <div className="main-content-area">
+        <div className="main-content-area" >
           <Grid
             container
             spacing={3}
             direction="column"
             justify="center"
             alignItems="center"
+            className="home-container-grid"
           >
             <Grid item xs={12}>
-              <h1>Spartan Meet</h1>
+              <h1 className="home-title">Spartan Meet</h1>
+              <h3 className="home-subtext">Productivity software: Track the costs of your meetings. </h3>
+              <h3 className="home-subtext">Do your meetings provide the results that justify the cost?</h3>
             </Grid>
             <Grid item xs={12}>
               <div className="home-buttons">

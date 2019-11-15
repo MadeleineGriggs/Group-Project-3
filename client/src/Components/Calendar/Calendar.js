@@ -197,38 +197,38 @@ export default class Ourcalendar extends React.Component {
           <div className="meeting-modal-container">
             <Grid container spacing={3} direction="row" justify="space-around">
               <Grid item xs={10}>
-                <h2>
+                <h2 className="schedule-title">
                   {this.state.modalTitle}
                 </h2>
-                <p>
-                  Start: <Moment format="LLL">{this.state.modalStart}</Moment>
+                <p className="schedule-subtitle">
+                <span className="span-bold">Start:</span> <Moment format="LLL">{this.state.modalStart}</Moment>
                 </p>
-                <p>
-                  End: <Moment format="LLL">{this.state.modalEnd}</Moment>
+                <p className="schedule-subtitle">
+                  <span className="span-bold">End:</span> <Moment format="LLL">{this.state.modalEnd}</Moment>
                 </p>
-                <p>
-                  Duration: {this.state.meetingDuration} Minutes
+                <p className="schedule-subtitle">
+                <span className="span-bold">Duration:</span> {this.state.meetingDuration} Minutes
                 </p>
-                <p>
-                  Total Cost of Meeting: $ {this.state.meetingTotal}
+                <p className="schedule-subtitle">
+                <span className="span-bold">Total Cost of Meeting:</span> $ {this.state.meetingTotal}
                 </p>
               </Grid>
               <Grid item xs={4}>
-                <h3>
+                <h3 className="schedule-title">
                   Description
                 </h3>
-                <p>
+                <p className="schedule-subtitle">
                   {this.state.modalDesc}
                 </p>
               </Grid>
               <Grid item xs={4}>
-                <h3>
+                <h3 className="schedule-title">
                     Attendees
                 </h3>
                 <div>
                   {this.state.attendees.map(attendee =>
                     {
-                      return <p key={attendee.email}>{attendee.name}, {attendee.email}</p>
+                      return <p className="schedule-subtitle" key={attendee.email}>{attendee.name}, {attendee.email}</p>
                     }
                   )}
                 </div>
@@ -240,8 +240,7 @@ export default class Ourcalendar extends React.Component {
           </div>
         </Modal>
 
-        <h1 className="section-title">View Your Meetings</h1>
-        <Button onClick={this.checkDuration}>Check Dates</Button>
+        <h1 className="meeting-title">View Your Meetings</h1>
         
         <FullCalendar 
           defaultView="dayGridMonth" 

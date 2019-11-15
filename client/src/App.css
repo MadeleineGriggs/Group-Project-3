@@ -2,8 +2,9 @@
   --darkest-greige: #66615b;
   --greige: #f4f3ef;
   --grey-medium: #d1cfcd;
-  --grey-medium: #424242;
+  --grey-dark: #424242;
   --spartan-primary: #ed3343;
+  --spartan-primary-dark: #a1252f;
   --spartan-secondary: #f3bb45;
 }
 
@@ -14,26 +15,87 @@ body {
 
 
 .App {
-  text-align: center;
+  /* text-align: center; */
 }
 
 
 
 /* Styling for the home page */
+.homeContainer {
+  width: 100vw;
+}
 
+.main-content-area{
+  background-image: url('./images/meetingRoom.jpg');
+  background-size: cover;
+  padding-bottom: 20rem;
+  padding-top: 1rem;
+}
 
+.home-container-grid {
+  /* margin: 0px !important; */
+  max-width: 100% !important;
+}
+
+.home-title {
+  color: white !important;
+  font-size: 7rem; 
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.home-subtext {
+  color: white !important;
+  text-align: center;
+}
 
 /* Styling for the signup login modal */
 .login-signup-modal-container {
   background-color: var(--greige);
-  width: 50rem;
+  width: 45rem;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) !important;
+  padding: 2rem;
 }
 
+.helm-logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 15px;
+  margin-left: 2rem;
+  /* display: inline !important; */
+  vertical-align: middle !important;
+}
 
+.logo-center {
+  padding-top: 10px !important;
+}
+
+.nav-title {
+  text-decoration: none !important;
+}
+
+.login-btn {
+  margin-top: 5px !important;
+  
+}
+
+.logo-text {
+  color: white !important;
+  text-decoration: none !important;
+  font-size: 1.55rem !important;
+  vertical-align: middle !important;
+}
+
+.nav-bar-link {
+  color: var(--greige) !important;
+  margin-top: 12px !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+}
 
 /* Styling for the Schedule Meet component */
 .meeting-picker {
@@ -44,6 +106,8 @@ body {
 .meeting-title {
   margin-top: 2rem;
   margin-bottom: 2rem;
+  color: var(--grey-dark) !important;
+  text-align: center;
 }
 
 .meeting-submit-btn {
@@ -56,14 +120,36 @@ body {
   margin-bottom: 5rem !important;
 }
 
+.schedule-title {
+  color: var(--grey-dark) !important;
+}
+
+.schedule-subtitle {
+  color: var(--darkest-greige) !important;
+}
+
+.meeting-title-field {
+  max-width: 20rem !important;
+}
 /* Styling for the Calendar area */
 
 .meeting-modal-container {
   background-color: var(--greige);
-  width: 50rem;
+  width: 45rem;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) !important;
-  padding: 3rem;
+  padding: 2rem 1rem;
+}
+
+.fc-event {
+  background-color: var(--spartan-primary) !important;
+  border-color: var(--spartan-primary-dark) !important;
+  border-radius: 2px;
+  padding: 5px  2px !important;
+}
+
+.span-bold {
+  font-weight: bold;
 }
