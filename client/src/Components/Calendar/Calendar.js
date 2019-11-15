@@ -9,6 +9,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interaction from "@fullcalendar/interaction";
 
 import Moment from 'react-moment';
+import moment from 'moment';
 
 
 import NavBar from "../Layout/navBar.js";
@@ -34,27 +35,14 @@ export default class Ourcalendar extends React.Component {
     }
   }
 
-  // Fetches the meetings from the database with an API call.
-  // fetchMeetings() {
-  //   fetch("/api/all-meetings")
-  //     .then( res => res.json())
-  //     .then((data) => {
-  //       this.setState({meetings: data})
-  //     })
-  //     .catch(console.log)
-  // };
-
   fetchYourMeetings() {
     fetch("/api/your-meetings")
       .then( res => res.json())
       .then((data) => {
-        // this.setState({userId: data})
-        console.log(data)
         for (var i = 0, len = data.length; i < len; i++) {
           const MeetingObj = {
             MeetingId: data[i].MeetingId
           };
-          console.log(MeetingObj)
           //Fetch information from the user's table based on the user id retrieved earlier.
           fetch("/api/your-meetings/single", {
             method: "POST",
@@ -75,7 +63,6 @@ export default class Ourcalendar extends React.Component {
               this.setState({
                 meetings: [...this.state.meetings, individualMeeting]
               })
-              console.log(this.state.meetings)
             });
         }
       })
@@ -97,7 +84,9 @@ export default class Ourcalendar extends React.Component {
         modalId: "",
         modalStart: "",
         modalEnd: "",
-        modalDesc: ""
+        modalDesc: "",
+        duration: "",
+        salaryTotal: ""
       })
     }
     //Toggles the event modal open and closed.
@@ -105,6 +94,27 @@ export default class Ourcalendar extends React.Component {
       eventModalOpen: !this.state.eventModalOpen
     })
   };
+
+  checkTotal(event) {
+
+    var total = 0;
+    for (var i = 0, len = this.state.attendees.length; i < len; i++) {
+      total += this.state.attendees[i].hourlyRate
+      console.log(total)
+    }
+    var finalTotal = (total / 60);
+    console.log(finalTotal);
+
+    var start = moment(this.state.modalStart);
+    var end = moment(this.state.modalEnd);
+    console.log(start)
+    console.log(end)
+    var totalTime = moment.duration(end.diff(start)).asMinutes()
+    console.log(totalTime)
+    this.setState({
+      salaryTotal: finalTotal
+    })
+  }
 
   populateUsersModal(meetingID) {
     //Fetch the attendees user's id for the meeting id given.
@@ -131,7 +141,8 @@ export default class Ourcalendar extends React.Component {
               const individualAttend = {
                 name: data.name,
                 company: data.company,
-                email: data.email
+                email: data.email,
+                hourlyRate: data.hourlyrate
               }
               this.setState({
                 attendees: [...this.state.attendees, individualAttend]
@@ -187,6 +198,9 @@ export default class Ourcalendar extends React.Component {
                 <p>
                   End: <Moment format="LLL">{this.state.modalEnd}</Moment>
                 </p>
+                <p>
+                  Duration: <Moment diff={this.state.modalStart} unit="minutes">{this.state.modalEnd}</Moment>
+                </p>
               </Grid>
               <Grid item xs={4}>
                 <h3>
@@ -203,9 +217,10 @@ export default class Ourcalendar extends React.Component {
                 <div>
                   {this.state.attendees.map(attendee =>
                     {
-                      return <p key={attendee.email}>{attendee.name}, {attendee.email}</p>
+                      return <p key={attendee.email}>{attendee.name}, {attendee.email}, {attendee.hourlyRate}</p>
                     }
                   )}
+                  <Button onClick={(e) => this.checkTotal(e)}>Check Total Hourly Rate</Button>
                 </div>
               </Grid>
               <Grid item xs={10}>
@@ -216,7 +231,8 @@ export default class Ourcalendar extends React.Component {
         </Modal>
 
         <h1 className="section-title">View Your Meetings</h1>
-
+        <Button onClick={this.checkDuration}>Check Dates</Button>
+        
         <FullCalendar 
           defaultView="dayGridMonth" 
           plugins={[interaction, dayGridPlugin]} 

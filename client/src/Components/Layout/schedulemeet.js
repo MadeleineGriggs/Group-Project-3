@@ -52,7 +52,7 @@ const handleMeetingCreation = (event, userData) => {
 //Populates an array of users that the person has checked to include.
 //API call does a bulk create to the attendees table.
 const createAttendees = (meetingID, userData) => {
-  let meetID = meetingID;
+
   let attendArray = [];
 
   // filter list of users to checked users only, then map to correct object structure

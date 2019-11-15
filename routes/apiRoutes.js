@@ -138,7 +138,7 @@ module.exports = function(app) {
       where: {
         Id: req.body.UserId
       },
-      attributes: ["id", "name", "company", "email"]
+      attributes: ["id", "name", "company", "email", "hourlyrate"]
     }).then(user => res.json(user))
   })
 
