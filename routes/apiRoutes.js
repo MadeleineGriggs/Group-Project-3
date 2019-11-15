@@ -88,6 +88,30 @@ module.exports = function(app) {
     )
   });
 
+
+  //API route to get all attendees, used in metrics.
+  app.get("/api/get-attendees", function(req, res) {
+    db.Attendees.findAll({
+      attributes: ["MeetingId", "UserId"]
+    }).then(attendees => res.json(attendees));
+  });
+
+  //API route to get meeting times
+  app.get("/api/get-meetings", function(req, res) {
+    db.Meeting.findAll({
+      attributes: ["start", "end"]
+    }).then(meetings => res.json(meetings));
+  });
+
+  // API route to get user salaries
+  app.get("/api/get-salaries", function(req, res) {
+    db.User.findAll({
+      attributes: ["id", "hourlyrate"]
+    }).then(salaries => {
+      res.json(salaries);
+    });
+  });
+
   //If the user is logged in, search the attendees table for the meetings they are booked for and
   // send back their ids.
   app.get("/api/your-meetings", function(req, res) {
