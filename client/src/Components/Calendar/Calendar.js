@@ -31,7 +31,9 @@ export default class Ourcalendar extends React.Component {
       modalEnd: "",
       modalDesc: "",
       attendees: [],
-      userId: ""
+      userId: "",
+      meetingTotal: "",
+      meetingDuration: ""
     }
   }
 
@@ -85,8 +87,8 @@ export default class Ourcalendar extends React.Component {
         modalStart: "",
         modalEnd: "",
         modalDesc: "",
-        duration: "",
-        salaryTotal: ""
+        meetingTotal: "",
+        meetingDuration: ""
       })
     }
     //Toggles the event modal open and closed.
@@ -95,7 +97,7 @@ export default class Ourcalendar extends React.Component {
     })
   };
 
-  checkTotal(event) {
+  checkTotal() {
 
     var total = 0;
     for (var i = 0, len = this.state.attendees.length; i < len; i++) {
@@ -110,9 +112,11 @@ export default class Ourcalendar extends React.Component {
     console.log(start)
     console.log(end)
     var totalTime = moment.duration(end.diff(start)).asMinutes()
-    console.log(totalTime)
+    var meetingCost = ((totalTime * finalTotal)).toFixed(2)
+    console.log(meetingCost)
     this.setState({
-      salaryTotal: finalTotal
+      meetingTotal: meetingCost,
+      meetingDuration: totalTime
     })
   }
 
@@ -147,7 +151,9 @@ export default class Ourcalendar extends React.Component {
               this.setState({
                 attendees: [...this.state.attendees, individualAttend]
               })
+              this.checkTotal();
             });
+
         }
       });
   }
@@ -171,8 +177,10 @@ export default class Ourcalendar extends React.Component {
         modalEnd: JSON.stringify(data.end).replace(/"/g,""),
         modalDesc: JSON.stringify(data.description).replace(/"/g,""),
       })
-      this.populateUsersModal(meetingID)
+      this.populateUsersModal(meetingID);
+      // this.checkTotal();
       this.toggleEventModal(event);
+;
      });
   };
 
@@ -199,7 +207,10 @@ export default class Ourcalendar extends React.Component {
                   End: <Moment format="LLL">{this.state.modalEnd}</Moment>
                 </p>
                 <p>
-                  Duration: <Moment diff={this.state.modalStart} unit="minutes">{this.state.modalEnd}</Moment>
+                  Duration: {this.state.meetingDuration} Minutes
+                </p>
+                <p>
+                  Total Cost of Meeting: $ {this.state.meetingTotal}
                 </p>
               </Grid>
               <Grid item xs={4}>
@@ -217,10 +228,9 @@ export default class Ourcalendar extends React.Component {
                 <div>
                   {this.state.attendees.map(attendee =>
                     {
-                      return <p key={attendee.email}>{attendee.name}, {attendee.email}, {attendee.hourlyRate}</p>
+                      return <p key={attendee.email}>{attendee.name}, {attendee.email}</p>
                     }
                   )}
-                  <Button onClick={(e) => this.checkTotal(e)}>Check Total Hourly Rate</Button>
                 </div>
               </Grid>
               <Grid item xs={10}>
