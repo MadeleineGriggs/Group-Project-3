@@ -13,13 +13,6 @@ body {
   background-color: var(--greige)
 }
 
-
-.App {
-  /* text-align: center; */
-}
-
-
-
 /* Styling for the home page */
 .homeContainer {
   width: 100vw;
