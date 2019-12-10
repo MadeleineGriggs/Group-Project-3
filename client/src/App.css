@@ -70,9 +70,14 @@ body {
   text-decoration: none !important;
 }
 
-.login-btn {
+.login-btn, .logout-btn {
   margin-top: 5px !important;
   
+}
+
+.logout-btn {
+  margin-left: 1rem !important;
+  background-color: var(--darkest-greige) !important;
 }
 
 .logo-text {
@@ -103,9 +108,11 @@ body {
   text-align: center;
 }
 
-.meeting-submit-btn {
+.meeting-submit-btn, .project-submit-btn {
   margin-top: 3rem;
 }
+
+
 
 .schedule-meeting-area {
   background-color: white;
@@ -123,6 +130,10 @@ body {
 
 .meeting-title-field {
   max-width: 20rem !important;
+}
+
+.drop-down {
+  width: 10rem;
 }
 /* Styling for the Calendar area */
 
@@ -145,4 +156,24 @@ body {
 
 .span-bold {
   font-weight: bold;
+}
+
+/* Styling for the Metrics Area */
+
+.plot-chart-area {
+  margin: 2rem 6rem;
+}
+
+.plot-chart-area-2 {
+  margin: 4rem 6rem;
+}
+
+.metric-title {
+  text-align: center;
+}
+
+.hint-container {
+  background-color: var(--grey-dark);
+  color: var(--greige);
+  padding: 5px;
 }

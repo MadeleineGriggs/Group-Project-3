@@ -1,7 +1,8 @@
 module.exports = function(sequelize, DataTypes) {
   var Project = sequelize.define("Project", {
     title: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    company: DataTypes.STRING
   });
 
   Project.associate = function(models) {

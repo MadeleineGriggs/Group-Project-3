@@ -40,11 +40,93 @@ module.exports = function(app) {
       end: req.body.end,
       title: req.body.title,
       attendees: req.body.attendees,
-      description: req.body.description
+      description: req.body.description,
+      prodId: req.body.prodId,
+      duration: req.body.duration
     }).then(result => {
       res.json(result.get("id"));
     });
   });
+
+  app.post("/api/new-project", function(req, res) {
+
+    if (req.isAuthenticated()) {
+      console.log("authcheck");
+      db.User.findOne({
+        where: {
+          Id: req.user.id
+        },
+        attributes: ["company"]
+      }).then(company => {
+        let companyName = company.company;
+        db.Project.create({
+          title: req.body.title,
+          description: req.body.description,
+          company: companyName
+        }).then(result => {
+          res.json(result);
+        });
+      });
+    }
+    
+  });
+
+  // app.post("/api/fetch-projects", function(req, res) {
+  //   if (req.isAuthenticated()) {
+  //     db.User.findOne({
+  //       where: {
+  //         Id: req.user.id
+  //       },
+  //       attributes: ["company"]
+  //     }).then(user => {
+  //       db.Project.findOne({
+  //         where: {
+  //           company: user.company
+  //         },
+  //         attributes: ["id", "title", "company"]
+  //       }).then(projects => {
+  //         db.Meeting.findAll({
+  //           where: {
+  //             prodId: projects.id
+  //           },
+  //           attributes: ["id", "title", "duration", "description"]
+  //         }).then(meetings => res.json(meetings))
+  //       });
+  //     });
+  //   } else {
+  //     res.json(["User is not logged in."]);
+  //   }
+  // });
+
+
+  app.post("/api/fetch-projects", function(req, res) {
+    if (req.isAuthenticated()) {
+      db.User.findOne({
+        where: {
+          Id: req.user.id
+        },
+        attributes: ["company"]
+      }).then(user => {
+        db.Project.findAll({
+          where: {
+            company: user.company
+          },
+          attributes: ["id", "title", "company"]
+        }).then(project => res.json(project));
+      });
+    } else {
+      res.json(["User is not logged in."]);
+    }
+  });
+
+  app.post("/api/fetch-meeting-by-project", function(req, res) {
+    db.Meeting.findAll({
+      where: {
+        prodId: req.body.projectId
+      },
+      attributes: ["id", "title", "description", "duration", "prodId"]
+    }).then(meeting => res.json(meeting))
+  })
 
   //Creates new attendees for meetings.
   app.post("/api/attendees", function(req, res) {
@@ -67,7 +149,12 @@ module.exports = function(app) {
 
   //Logs the user out.
   app.get("/api/logout", function(req, res) {
-    req.logout();
+    req.logOut();
+    req.session.destroy(function (err) {
+      if (err) { return next(err); }
+      // The response should indicate that the user is no longer authenticated.
+      return res.send({ authenticated: req.isAuthenticated() });
+    });
   });
 
   //Checks if the user is logged in.
@@ -84,6 +171,14 @@ module.exports = function(app) {
   app.get("/api/all-meetings", function(req, res) {
     db.Meeting.findAll({
       attributes: ['id', 'title', 'date', 'start', 'end', "description"]
+    }).then( meetings => (res.json(meetings))
+    )
+  });
+
+  //Gets all the possible projects.
+  app.get("/api/all-projects", function(req, res) {
+    db.Project.findAll({
+      attributes: ['id', 'title']
     }).then( meetings => (res.json(meetings))
     )
   });

@@ -1,5 +1,7 @@
 // eslint-disable-next-line
 import React, { useState } from "react";
+import Moment from 'react-moment';
+import moment from 'moment';
 import MomentUtils from "@date-io/moment";
 import "./home.css";
 // Material UI imports
@@ -11,6 +13,9 @@ import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 // MaterialUI pickers imports.
 import {
   DatePicker,
@@ -19,7 +24,31 @@ import {
 } from "@material-ui/pickers";
 //Local imports - hooks, other components.
 import useFetch from "./Hooks/userFind.js";
+import useFetchProject from "./Hooks/projectFind.js";
 import NavBar from "./navBar.js";
+
+let projectId = "";
+
+//Handles which project has been selected from the dropdown menu of projects.
+const handleProjectChange = (event) => {
+  projectId = event.target.value
+}
+
+const createProject = (event) => {
+  // event.preventDefault();
+  let newProject = document.getElementById("newProject");
+  const projectData = {
+    title: newProject.value,
+    description: "Something"
+  };
+  fetch("/api/new-project", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(projectData)
+  })
+  .then(response => response.json())
+}
+
 
 //Creates a new meeting.
 const handleMeetingCreation = (event, userData) => {
@@ -32,15 +61,23 @@ const handleMeetingCreation = (event, userData) => {
   let newMeetEnd = document.getElementById("standard-basic newDateEnd");
   let newMeetFullEnd = newDate.value + "T" + newMeetEnd.value + ":00";
   let newDescNewLines = document.getElementById("standard-multiline-flexible newDesc");
-  console.log(newDescNewLines.value)
   let newDesc = (newDescNewLines.value).replace(/(\n)/g," ")
-  console.log(newDesc)
+
+  var start = moment(newMeetFullStart);
+  var end = moment(newMeetFullEnd);
+  console.log(start)
+  console.log(end)
+  var totalTime = moment.duration(end.diff(start)).asMinutes()
+  console.log(totalTime)
+
   const meetingData = {
     date: newDate.value,
     start: newMeetFullStart,
     end: newMeetFullEnd,
     title: newTitle.value,
-    description: newDesc
+    description: newDesc,
+    prodId: projectId,
+    duration: totalTime
   };
   fetch("/api/new-meeting", {
     method: "POST",
@@ -78,6 +115,10 @@ function ScheduleMeet(props) {
   const userData = fetchData[0]
   const setUserData = fetchData[1]
 
+  const fetchProject = useFetchProject("/api/all-projects")
+  const projectData = fetchProject[0]
+  const setProjectData = fetchProject[1]
+
   const [selectedDate, handleDateChange] = useState(new Date());
   const [selectedDate2, handleDateChange2] = useState(new Date())
 
@@ -98,7 +139,7 @@ function ScheduleMeet(props) {
 
       <Grid item xs={6} className="scheduler-container">
 
-      <h2 className="schedule-title">Select your date and time for the meeting here.</h2>
+      <h2 className="schedule-title">Book Meeting</h2>
       <MuiPickersUtilsProvider utils={MomentUtils}>
       <h3 className="schedule-subtitle">Meeting Title</h3>
       <TextField
@@ -168,7 +209,36 @@ function ScheduleMeet(props) {
       </Grid>
 
       <Grid item xs={4}>
-
+        <h2>Assign Meeting to Project</h2>
+          <FormControl>
+            <InputLabel id="simple-select-label">Project</InputLabel>
+            <Select
+              labelid="simple-select-label" className="drop-down"
+              onChange={handleProjectChange}
+            >
+              {projectData.map((item, key) => 
+              <MenuItem value={item.id} id={item.id} key={item.id}>{item.title}</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        <h3 className="schedule-subtitle">Create New Project</h3>
+        <TextField
+          name="Project Title"
+          id="newProject"
+          fullWidth
+          className="project-title-field"
+          label="New Project..."
+        />
+          <div className="project-submit-btn">
+          <Button
+            id="projectSub"
+            onClick={(event) => createProject(event)}
+            variant="contained"
+            color="primary"
+          >
+            Create New Project
+          </Button>
+        </div>
         <h2 className="schedule-title">Meeting Attendees: </h2>
       <FormControl component="fieldset" className='formControl'>
         <FormLabel component="legend">Assign Members</FormLabel>

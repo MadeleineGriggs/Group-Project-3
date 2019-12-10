@@ -25,11 +25,21 @@ module.exports = function(sequelize, DataTypes) {
     },
     description: {
       type: DataTypes.STRING
+    },
+    prodId: {
+      type: DataTypes.STRING
+    },
+    duration: {
+      type: DataTypes.STRING
+    },
+    cost: {
+      type: DataTypes.STRING
     }
   });
 
   Meeting.associate = function(models) {
     Meeting.hasMany(models.Attendees);
+    Meeting.belongsTo(models.Project)
   };
 
   return Meeting;

@@ -82,6 +82,7 @@ class NavBar extends Component {
     this.toggleModal(event);
   }
 
+
   // Submits the email and password of a user logging in. Passport authenticates the user and sets a cookie to keep the user logged in.
   handleUserLogin(event) {
     event.preventDefault();
@@ -100,10 +101,9 @@ class NavBar extends Component {
 
   // Logs the User out.
   handleUserLogout(event) {
-    event.preventDefault();
-    fetch("api/logout", {
-      method: "GET"
-    })
+    // event.preventDefault();
+    console.log("Logging out.")
+    fetch("/api/logout")
       .then(res => res.json())
       .then(res => console.log(res));
   }
@@ -281,11 +281,8 @@ class NavBar extends Component {
                   </Typography>
                 </div>
               </Grid>
-              <Grid item xs={3}>
-                <Typography variant="h6" className="nav-bar-link">About Us</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant="h6" className="nav-bar-link">Contact</Typography>
+              <Grid item xs={6}>
+                {/* <Typography variant="h6" className="nav-bar-link">Contact</Typography> */}
               </Grid>
               <Grid item xs={3}>
                 <Button
@@ -295,6 +292,15 @@ class NavBar extends Component {
                   className="login-btn"
                 >
                   Login | Signup
+                </Button>
+                <Button
+                  onClick={e => this.handleUserLogout(e)}
+                  variant="outlined"
+                  color="secondary"
+                  className="logout-btn"
+                  href="/"
+                >
+                  Logout
                 </Button>
               </Grid>
             </Grid>
