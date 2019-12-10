@@ -152,7 +152,7 @@ class Metrics extends Component {
 
             <div className="plot-chart-area">
               <h2>Duration of Meetings by Project</h2>
-              <h3>Mouse over points to see duration and meeting title</h3>
+              <h3 className="schedule-subtitle">Mouse over points to see duration and meeting title</h3>
               <XYPlot width={1200} height={800}>
                 <VerticalGridLines />
                 <HorizontalGridLines />
@@ -191,7 +191,7 @@ class Metrics extends Component {
 
             <div className="plot-chart-area-2">
               <h2>Cost of Meetings by Project</h2>
-              <h3>Mouse over points to see cost and meeting title</h3>
+              <h3 className="schedule-subtitle">Mouse over points to see cost and meeting title</h3>
               <XYPlot width={1200} height={800}>
                 <VerticalGridLines />
                 <HorizontalGridLines />

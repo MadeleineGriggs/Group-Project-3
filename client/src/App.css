@@ -162,10 +162,14 @@ body {
 
 .plot-chart-area {
   margin: 2rem 6rem;
+  background-color: white;
+  padding: 1rem 2rem;
 }
 
 .plot-chart-area-2 {
   margin: 4rem 6rem;
+  background-color: white;
+  padding: 1rem 2rem;
 }
 
 .metric-title {
